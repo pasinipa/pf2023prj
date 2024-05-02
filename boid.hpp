@@ -1,6 +1,5 @@
 #pragma once
 #include <array>
-#include <cmath>
 #include <vector>
 
 // const double SIGHT_DIST = 10;
@@ -25,24 +24,25 @@ const double MAX_COMPONENT_SPEED = 1.;
 
 class Boid {
 
-    public:
     double x, y;
     double velX, velY;
     double impX, impY;
 
     // it should always be that size(nearBoids) == size(nearBoidsDistances)
-    std::vector<Boid> nearBoids;
+    std::vector<const Boid&> nearBoids;
     std::vector<double> nearBoidsDist;
 
     std::array<double, 2> separationImpulse (SimulationParameters pars);
     std::array<double, 2> allignmentImpulse (SimulationParameters pars);
     std::array<double, 2> cohesionImpulse (SimulationParameters pars);
 
+    double distance (const Boid&);
+
+    public:
     void updatePosition ();
     void updateVelocity ();
     void updateImpulse (SimulationParameters);
     void updateNeighbours (const std::vector<Boid>& state, SimulationParameters pars);
 
-    double distance (const Boid&);
     // have to implement delta time
 };
