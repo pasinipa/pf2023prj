@@ -1,21 +1,24 @@
 #pragma once
 #include "boid.hpp"
+#include "simpars.hpp"
 #include <vector>
 
-enum Direction { FORWARDS, BACKWARDS };
+enum class Direction { FORWARDS = 1, BACKWARDS = -1 };
 
 class Simulation {
 
-    long long time;
-    std::vector<Boid>* state;
-    SimulationParameters parameters;
+    public:
+    void updateSimulation ();
 
     Simulation (int);
-    Simulation (int, const SimulationParameters&);
+    Simulation (int, SimPars const&);
+
+    private:
+    long long time{ 0 };
+    std::vector<Boid> state{ std::vector<Boid> () };
+    SimPars parameters{ SimPars () };
+
     void initState (int boidNum);
-
-    void updateState (SimulationParameters);
+    void updateState ();
     void updateView ();
-
-    void updateSimulation (SimulationParameters);
 };

@@ -1,116 +1,131 @@
 #include "boid.hpp"
+#include "arrayop.hpp"
+#include <cmath>
+#include <random>
 #include <vector>
 
-// const double SIGHT_DIST = 10;
+using ArrayD2 = std::array<double, 2>;
 
-std::array<double, 2> Boid::separationImpulse (SimulationParameters pars) {
+Boid::Boid () {
+    position[0] = (std::rand () / static_cast<double> (RAND_MAX)) * X_SPACE;
+    position[1] = (std::rand () / static_cast<double> (RAND_MAX)) * Y_SPACE;
+    velocity[0] = ((std::rand () / static_cast<double> (RAND_MAX)) - 0.5) * MAX_COMPONENT_SPEED;
+    velocity[1] = ((std::rand () / static_cast<double> (RAND_MAX)) - 0.5) * MAX_COMPONENT_SPEED;
+    impulse = { 0, 0 };
+}
 
-    std::array<double, 2> sepImp = { 0, 0 };
-
+ArrayD2 Boid::separationImpulse (SimPars const& pars) const {
+    ArrayD2 sepImp = { 0, 0 };
     // assert (size(nearBoids) == size(nearBoidsDist));
-    for (int i = 0; i < (int)size (nearBoidsDist); ++i) {
+    // range-for statement is not used because the index is needed to access
+    // nearBoidsDist
+    // also, need to choose a consistent naming criterion for the impulse
+    // functions' scope variables
+    for (int i = 0; i < static_cast<int> (size (nearBoids)); ++i) {
         if (nearBoidsDist[i] < pars.ds) {
-            sepImp[0] += x - nearBoids[i].x;
-            sepImp[1] += y - nearBoids[i].y;
+            sepImp += (position - nearBoids[i]->position);
         }
     }
-    sepImp[0] *= pars.s;
-    sepImp[1] *= pars.s;
+    sepImp *= pars.s;
     return sepImp;
 }
 
-std::array<double, 2> Boid::allignmentImpulse (SimulationParameters pars) {
+ArrayD2 Boid::allignmentImpulse (SimPars const& pars) const {
+    ArrayD2 sumVel{ 0, 0 };
 
-    double sumVelX{ 0 };
-    double sumVelY{ 0 };
-
-    for (int i = 0; i < (int)size (nearBoids); ++i) {
-        sumVelX += nearBoids[i].velX;
-        sumVelY += nearBoids[i].velY;
+    for (auto b : nearBoids) {
+        sumVel += b->velocity;
     }
-
-    return { pars.s * sumVelX / size (nearBoids), pars.s * sumVelY / size (nearBoids) };
+    ArrayD2 averageVel = sumVel / static_cast<double> (size (nearBoids));
+    return averageVel * pars.a;
 }
 
 
-std::array<double, 2> Boid::cohesionImpulse (SimulationParameters pars) {
+ArrayD2 Boid::cohesionImpulse (SimPars const& pars) const {
+    ArrayD2 sumPos{ 0, 0 };
 
-    double sumX{ 0 };
-    double sumY{ 0 };
-
-    for (int i = 0; i < (int)size (nearBoids); ++i) {
-        sumX += nearBoids[i].x;
-        sumY += nearBoids[i].y;
+    for (auto b : nearBoids) {
+        sumPos += b->position;
     }
-
-    return { (pars.c * sumX / size (nearBoids)), (pars.c * sumY / size (nearBoids)) };
+    ArrayD2 averagePos = sumPos / static_cast<double> (size (nearBoids));
+    return averagePos * pars.c;
 }
 
 void Boid::updatePosition () {
-    x += velX;
-    y += velY;
+    position += velocity;
 
     // torus-like space
-    while (x > X_SPACE) {
-        x -= X_SPACE;
-    };
-    while (y > Y_SPACE) {
-        y -= Y_SPACE;
-    };
-    while (x < 0) {
-        x += X_SPACE;
-    };
-    while (y < 0) {
-        y += Y_SPACE;
-    };
+    while (position[0] > X_SPACE) {
+        position[0] -= X_SPACE;
+    }
+    while (position[1] > Y_SPACE) {
+        position[1] -= Y_SPACE;
+    }
+    while (position[0] < 0) {
+        position[0] += X_SPACE;
+    }
+    while (position[1] < 0) {
+        position[1] += Y_SPACE;
+    }
 }
 
 void Boid::updateVelocity () {
-
-    velX += impX;
-    velY += impY;
+    velocity += impulse;
 
     // enforcing the speed limit
-    if (velX > MAX_COMPONENT_SPEED) {
-        velX = MAX_COMPONENT_SPEED;
+    if (velocity[0] > MAX_COMPONENT_SPEED) {
+        velocity[0] = MAX_COMPONENT_SPEED;
     }
-    if (velX < -MAX_COMPONENT_SPEED) {
-        velX = -MAX_COMPONENT_SPEED;
+    if (velocity[0] < -MAX_COMPONENT_SPEED) {
+        velocity[0] = -MAX_COMPONENT_SPEED;
     }
-    if (velY > MAX_COMPONENT_SPEED) {
-        velY = MAX_COMPONENT_SPEED;
+    if (velocity[1] > MAX_COMPONENT_SPEED) {
+        velocity[1] = MAX_COMPONENT_SPEED;
     }
-    if (velY < -MAX_COMPONENT_SPEED) {
-        velY = -MAX_COMPONENT_SPEED;
+    if (velocity[1] < -MAX_COMPONENT_SPEED) {
+        velocity[1] = -MAX_COMPONENT_SPEED;
     }
 }
 
-void Boid::updateImpulse (SimulationParameters pars) {
-    std::array<double, 2> sepImp = separationImpulse (pars);
-    std::array<double, 2> allImp = allignmentImpulse (pars);
-    std::array<double, 2> coImp  = cohesionImpulse (pars);
-    impX                         = sepImp[0] + allImp[0] + coImp[0];
-    impY                         = sepImp[1] + allImp[1] + coImp[1];
+void Boid::updateImpulse (SimPars const& pars) {
+
+    impulse = this->separationImpulse (pars) + this->allignmentImpulse (pars) +
+    this->cohesionImpulse (pars);
 }
 
-void Boid::updateNeighbours (const std::vector<Boid>& state, SimulationParameters pars) {
+ArrayD2 const& Boid::getPosition () const {
+    return position;
+}
+
+// the toroidal nature of the simulation space has to be taken into account!!
+// both here and in the impulse functions...
+double distance (Boid const& b1, Boid const& b2) {
+    return std::sqrt (std::pow (b1.getPosition ()[0] - b2.getPosition ()[0], 2) +
+    std::pow (b1.getPosition ()[1] - b2.getPosition ()[1], 2));
+}
+
+// this really could use some more readability
+void Boid::updateNeighbours (std::vector<Boid> const& state, SimPars const& pars) {
+
     nearBoids.clear ();
     nearBoidsDist.clear ();
 
-    for (auto b : state) {
-        if (&b == this) {
-            continue;
+    for (auto& b : state) {
+        double dist{ -1 };
+        if (&b != this) {
+            dist = distance (*this, b);
         }
-        double dist = this->distance (b);
 
-        if (dist < pars.d) {
-            nearBoids.push_back (b);
+        if (dist < pars.d and dist >= 0) {
+            nearBoids.push_back (&b);
             nearBoidsDist.push_back (dist);
         }
     }
 }
-// [0] is the x coordinate and [1] is the y
 
-double Boid::distance (const Boid& b) {
-    return std::sqrt (std::pow (this->x - b.x, 2) + std::pow (this->y - b.y, 2));
+void Boid::update (std::vector<Boid> const& state, SimPars const& pars) {
+    this->updateNeighbours (state, pars);
+    this->updateImpulse (pars);
+    this->updateVelocity ();
+    this->updatePosition ();
 }

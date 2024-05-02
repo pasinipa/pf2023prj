@@ -1,48 +1,32 @@
 #include "simulation.hpp"
 // #include "graphics.hpp"
+#include <iostream>
 #include <random>
 #include <vector>
 
 
-Simulation::Simulation (int boidNum) {
-    initState (boidNum);
-    parameters = SimulationParameters();
-    time       = 0;
+Simulation::Simulation (int boidNum) : state{ std::vector<Boid> (boidNum) } {
+    std::cout << size (state) << std::endl;
+    std::cout << state[0].getPosition ()[0] << " ---- "
+              << state[1].getPosition ()[1] << std::endl;
+    std::cout << parameters.d << std::endl;
+    std::cin.get ();
 }
 
-Simulation::Simulation (int boidNum, const SimulationParameters& pars) {
-    initState (boidNum);
-    parameters = pars;
-    time       = 0;
+Simulation::Simulation (int boidNum, SimPars const& pars)
+: state{ std::vector<Boid> (boidNum) }, parameters{ pars } {
 }
 
-void Simulation::initState (int boidNum) {
-    state = new std::vector<Boid> (boidNum);
-    for (auto b : *state) {
-        b.x    = (std::rand () / (double)RAND_MAX) * X_SPACE;
-        b.y    = (std::rand () / (double)RAND_MAX) * Y_SPACE;
-        b.velX = (std::rand () / (double)RAND_MAX - 0.5) * MAX_COMPONENT_SPEED;
-        b.velY = (std::rand () / (double)RAND_MAX - 0.5) * MAX_COMPONENT_SPEED;
-        b.impX = 0;
-        b.impY = 0;
+
+void Simulation::updateState () {
+    for (auto b : state) {
+        b.update (state, parameters);
     }
 }
 
-void Simulation::updateState (SimulationParameters pars) {
-    for (auto b : *state) {
-        b.updateNeighbours (*state, pars);
-        b.updateImpulse (pars);
-    }
-
-    for (auto b : *state) {
-        b.updateVelocity ();
-        b.updatePosition ();
-    }
-}
-// void updateView (Direction d);
-
-void Simulation::updateSimulation (SimulationParameters pars) {
-    updateState (pars);
+// void updateView ();
+void Simulation::updateSimulation () {
+    updateState ();
     // updateView();
 
     ++time;
