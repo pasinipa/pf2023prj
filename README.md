@@ -3,3 +3,4 @@ Repository per coordinare lo sviluppo del progetto finale per il corso di Progra
 
 
 Paolo Pasini
+Fabrizio Metta
