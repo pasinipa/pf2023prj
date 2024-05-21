@@ -3,7 +3,6 @@
 
 class Walls {
     private:
-    ArrayD2 position; // position of the wall
     ArrayD2 nearWall; // the area in which the boids "feel" the presence of the wall
 
     // function that checks if the boid hits the wall and modifies its velocity
