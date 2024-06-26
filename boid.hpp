@@ -4,37 +4,32 @@
 #include <iostream>
 #include <vector>
 
-// const double SIGHT_DIST = 10;
+const double X_SPACE{100.};
+const double Y_SPACE{100.};
+const double MAX_SPEED{1.};
+
 using ArrayD2 = std::array<double, 2>;
-constexpr double X_SPACE{ 100. };
-constexpr double Y_SPACE{ 100. };
-constexpr double MAX_COMPONENT_SPEED{ 1. };
 
-class Boid {
+class Boid
+{
+ public:
+  Boid();
 
-    public:
-    void update (std::vector<Boid> const& state, SimPars const& pars);
-    ArrayD2 const& getPosition () const;
-    Boid ();
+  void updateImpulse(std::vector<Boid> const& state);
+  void updatePosition();
+  void updateVelocity();
 
-    private:
-    ArrayD2 position;
-    ArrayD2 velocity;
-    ArrayD2 impulse;
+ private:
+  using Neighbour = std::pair<Boid*, double>;
 
-    // it should always be that size(nearBoids) == size(nearBoidsDistances)
-    // should nearBoids be a vector pointer or just a vector?
-    std::vector<const Boid*> nearBoids;
-    std::vector<double> nearBoidsDist;
+  std::vector<Neighbour> m_neighbourhood;
+  ArrayD2 m_position;
+  ArrayD2 m_velocity;
+  ArrayD2 m_impulse;
 
-    ArrayD2 separationImpulse (SimPars const&) const;
-    ArrayD2 allignmentImpulse (SimPars const&) const;
-    ArrayD2 cohesionImpulse (SimPars const&) const;
-
-
-    void updatePosition ();
-    void updateVelocity ();
-    void updateImpulse (SimPars const&);
-    void updateNeighbours (std::vector<Boid> const& state, SimPars const& pars);
-    // have to implement delta time
+  void updateNeighbourhood(std::vector<Boid> const& state);
+  ArrayD2 separationImpulse();
+  ArrayD2 allignmentImpulse();
+  ArrayD2 cohesionImpulse();
+  // ArrayD2 wallImpulse();
 };
