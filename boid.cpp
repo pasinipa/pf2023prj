@@ -116,7 +116,7 @@ void Boid::updateNeighbours (std::vector<Boid> const& state, SimPars const& pars
             dist = distance (*this, b);
         }
 
-        if (dist < pars.d and dist >= 0) {
+        if (dist < pars.d && dist >= 0) {
             nearBoids.push_back (&b);
             nearBoidsDist.push_back (dist);
         }
