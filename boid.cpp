@@ -13,8 +13,18 @@ double euclidianNorm(ArrayD2 const& arr)
   return norm;
 }
 
-// default constructor has to be replaced
-Boid::Boid() = default;
+std::default_random_engine eng;
+std::normal_distribution<double> dist1{50., 15.};
+std::normal_distribution<double> dist2{0.5, 0.2};
+
+double x = dist1(eng);
+double y = dist1(eng);
+double v_x = dist2(eng);
+double v_y = dist2(eng);
+
+Boid::Boid() 
+  : m_position{x, y}, m_velocity{v_x, v_y}
+{}
 
 void Boid::updateImpulse(std::vector<Boid> const& state)
 {
