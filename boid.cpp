@@ -13,19 +13,15 @@ double euclidianNorm(ArrayD2 const& arr)
   return norm;
 }
 
-std::default_random_engine eng;
-std::normal_distribution<double> dist1{50., 15.};
-std::normal_distribution<double> dist2{0.5, 0.2};
-
-double x   = dist1(eng);
-double y   = dist1(eng);
-double v_x = dist2(eng);
-double v_y = dist2(eng);
-
 Boid::Boid()
-    : m_position{x, y}
-    , m_velocity{v_x, v_y}
 {
+  std::default_random_engine eng;
+  std::normal_distribution<double> dist1{50., 15.};
+  std::normal_distribution<double> dist2{0.5, 0.2};
+
+  ArrayD2 m_position = {dist1(eng), dist1(eng)};
+  ArrayD2 m_velocity = {dist2(eng), dist2(eng)};
+
   if (m_position[0] < 0) {
     m_position[0] = 0;
   } else if (m_position[1] < 0) {
