@@ -1,3 +1,4 @@
+#pragma once
 #include "statistics.hpp"
 
 void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
