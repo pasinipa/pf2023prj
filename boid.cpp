@@ -4,6 +4,7 @@
 #include <cmath>
 #include <random>
 #include <vector>
+#include <numeric>
 
 double euclidianNorm(ArrayD2 const& arr)
 {
