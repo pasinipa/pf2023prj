@@ -17,31 +17,11 @@ double euclidianNorm(ArrayD2 const& arr)
 Boid::Boid()
 {
   std::default_random_engine eng;
-  std::normal_distribution<double> dist1{50., 15.};
-  std::normal_distribution<double> dist2{0.5, 0.2};
+  std::uniform_real_distribution<double> dist1(X_SPACE, Y_SPACE);
+  std::uniform_real_distribution<double> dist2(0., MAX_SPEED);
 
   ArrayD2 m_position = {dist1(eng), dist1(eng)};
   ArrayD2 m_velocity = {dist2(eng), dist2(eng)};
-
-  if (m_position[0] < 0) {
-    m_position[0] = 0;
-  } else if (m_position[1] < 0) {
-    m_position[1] = 0;
-  } else if (m_position[0] > X_SPACE) {
-    m_position[0] = X_SPACE;
-  } else if (m_position[1] > Y_SPACE) {
-    m_position[1] = Y_SPACE;
-  }
-
-  if (m_velocity[0] < 0) {
-    m_position[0] = 0;
-  } else if (m_velocity[1] < 0) {
-    m_position[1] = 0;
-  } else if (m_velocity[0] > MAX_SPEED) {
-    m_velocity[0] = MAX_SPEED;
-  } else if (m_velocity[1] > MAX_SPEED) {
-    m_velocity[1] = MAX_SPEED;
-  }
 }
 
 void Boid::updateImpulse(std::vector<Boid> const& state)
