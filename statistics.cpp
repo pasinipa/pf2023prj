@@ -71,17 +71,11 @@ void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
 
 double mean_velN{0};
 for (auto b : state) {
-    for (auto c : state) {
-      if (&c == &b) {
-        continue;
-      }
-
-      double deltaV = euclidianNorm(b.m_velocity - c.m_velocity);
+      double deltaV = euclidianNorm(b.m_velocity);
       mean_velN += deltaV;
     }
-  }
 
-  std::cout << "The mean distance at time " << time << " is "
+  std::cout << "The mean velocity at time " << time << " is "
             << mean_velN / std::size(state) << '\n';    
 
 }
