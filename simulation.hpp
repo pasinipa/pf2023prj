@@ -14,6 +14,7 @@ class Simulation
  private:
   long long time{0};
   std::vector<Boid> state;
+  std::vector<Wall> wallsConfig;
 
   void updateState();
 };

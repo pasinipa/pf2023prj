@@ -2,9 +2,9 @@
 #include "arrayop.hpp"
 #include "simulation.hpp"
 #include <cmath>
+#include <numeric>
 #include <random>
 #include <vector>
-#include <numeric>
 
 double euclidianNorm(ArrayD2 const& arr)
 {
@@ -71,26 +71,16 @@ void Boid::updateImpulse(std::vector<Boid> const& state)
   return;
 }
 
-/*
-ArrayD2 Boid::wallbounce ( pars) const {
-    ArrayD2 Wcorrection{ 0., 0. };
-    if (m_position[0] > 99) {
-        // wall = ...
-        Wcorrection *= (100 - m_position[0]);
+void Boid::wallDeviation(std::vector<Wall> const& wallsConfig)
+{
+  for (auto w : wallsConfig) {
+    double dist = euclidianNorm(m_position - w.w_position);
+    if (dist < w.radius) {
+      ArrayD2 wallDev = (m_position - w.w_position) * 1/(dist * euclidianNorm(m_position)) * Simulation::parameters.w;
+      m_impulse += wallDev;
     }
-    if (m_position[0] < 1) {
-        // wall = ...
-        Wcorrection *= m_position[0];
-    }
-    if (m_position[1] > 99) {
-    }
-    if (m_position[1] < 1) {
-    }
-    return Wcorrection;
+  }
 }
-
-sarebbe bello fare la spinta proporzionale alla distanza dal muro
-*/
 
 void Boid::updatePosition()
 {

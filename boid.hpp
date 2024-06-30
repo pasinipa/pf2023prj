@@ -3,6 +3,7 @@
 #include <array>
 #include <iostream>
 #include <vector>
+#include "walls.hpp"
 
 const double X_SPACE{100.};
 const double Y_SPACE{100.};
@@ -18,6 +19,7 @@ class Boid
   void updateImpulse(std::vector<Boid> const& state);
   void updatePosition();
   void updateVelocity();
+  void wallDeviation(std::vector<Wall> const& wallsConfig);
 
  private:
   using Neighbour = std::pair<Boid*, double>;
@@ -31,5 +33,4 @@ class Boid
   ArrayD2 separationImpulse();
   ArrayD2 allignmentImpulse();
   ArrayD2 cohesionImpulse();
-  // ArrayD2 wallImpulse();
 };

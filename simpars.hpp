@@ -9,6 +9,7 @@ struct SimPars
   double c{0.3};
   int bNum{10};
   bool isVerbose{false};
+  double w{}; //wall's impulse
 
   SimPars() = default;
 };

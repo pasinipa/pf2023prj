@@ -37,6 +37,7 @@ int main(int argc, char* const argv[])
     default:
       std::cout << "usage: you used it wrong, dumbass";
       return 1;
+      //options to select wall cofiguration (default without walls?)
     }
   }
 
