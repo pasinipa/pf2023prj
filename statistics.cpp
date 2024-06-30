@@ -23,7 +23,28 @@ void Statistics::Mean_distance(time, std::vector<Boid> const& state)
     cout << " the mean distance at time " << time << " is " << mean_Dist;
     
     }    
-    
+
+/*
+    double mean_distN{0};
+    double distance{0};
+    if (time % 10 == 0) 
+    {
+        for (int i{0}; i < std::size(state); ++i)
+        {
+            for (int j{i+1}; j <= std::size(state); ++j)
+            {
+                distance = state[i].m_position - state[j].m_position;
+                mean_distN += euclidianNorm(distance);
+            }
+        }            
+    double mean_dist = mean_distN / std::size(state);
+
+    std::cout << "The mean distance at time " << time << " is " << mean_dist << '\n';
+    }
+
+*/
+
+
 }
 
 void Statistics::Mean_velocity(time, std::vector<Boid> const& state)
