@@ -12,6 +12,7 @@ using ArrayD2 = std::array<double, 2>;
 
 class Boid
 {
+  friend class Statistics;
  public:
   Boid();
 
