@@ -3,16 +3,17 @@
 #include <array>
 #include <cstddef>
 
-void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
+void Statistics::Mean_distance(time, std::vector<Boid> const& state)
 {
-    /* double mean_distN {0};
+    double mean_distN {0};
+    auto distance;
     for ( time%10 = 0) 
     {
         for (int i = 0; i < std::size(state); i++) 
         {
-            for(int j = i + 1; j < std::size(state) ;j++)
+            for (int j = i + 1; j < std::size(state) ;j++)
             {
-                state[i(m_position)] - state[j(m_position)] = distance;      oppure passo sia i che j by reference?
+                distance = state.m_position[i] - state.m_position[j];      //oppure passo sia i che j by reference?
                 mean_distN =+ euclidianNorm(distance);
             }
         }
@@ -22,18 +23,19 @@ void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
     cout << " the mean distance at time " << time << " is " << mean_Dist;
     
     }    
-    */
+    
 }
 
-void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
+void Statistics::Mean_velocity(time, std::vector<Boid> const& state)
 {
-        /* double mean_velN {0};
+    double mean_velN {0};
+    auto velocity;
     for ( time%10 = 0) 
     {
         for (int i = 0; i < std::size(state); i++) 
         {
 
-        state[i(m_velocity)] = velocity;        oppure i lo passo by reference? (*i)
+        velocity = state.m_velocity[i];        oppure i lo passo by reference? (*i)
         mean_velN =+ euclidianNorm(velocity);
         
         }
@@ -42,8 +44,8 @@ void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
 
     cout << " the mean velocity at time " << time << " is " << mean_Vel;
     }    
-    */
+
 }
 
-void Statistics::Sdeviation(int time, std::vector<Boid> const& state)
+void Statistics::Sdeviation(time, std::vector<Boid> const& state)
 {}
