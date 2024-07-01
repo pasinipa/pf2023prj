@@ -1,19 +1,21 @@
 #pragma once
 #include "boid.hpp"
 #include "simpars.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include <vector>
 
 class Simulation
 {
  public:
-  void updateSimulation();
+  void updateState();
+  void updateView(sf::RenderWindow&);
   Simulation();
 
   static SimPars parameters;
 
- private:
-  long long time{0};
   std::vector<Boid> state;
 
-  void updateState();
+ private:
+  long long time{0};
 };

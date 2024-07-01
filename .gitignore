@@ -1,4 +1,7 @@
 
+*.out
+*json
+.vscode
 *swo
 *swp
 build

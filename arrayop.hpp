@@ -1,44 +1,40 @@
 #pragma once
+using ArrayF2 = std::array<float, 2>;
 
-inline std::array<double, 2> operator+(std::array<double, 2> const& a1,
-                                       std::array<double, 2> const& a2)
+inline ArrayF2 operator+(ArrayF2 const& a1, ArrayF2 const& a2)
 {
   return {a1[0] + a2[0], a1[1] + a2[1]};
 }
 
-inline std::array<double, 2> operator-(std::array<double, 2> const& a1,
-                                       std::array<double, 2> const& a2)
+inline ArrayF2 operator-(ArrayF2 const& a1, ArrayF2 const& a2)
 {
   return {a1[0] - a2[0], a1[1] - a2[1]};
 }
 
-inline std::array<double, 2> operator/(std::array<double, 2> const& a1,
-                                       double d)
+inline ArrayF2 operator/(ArrayF2 const& a1, float f)
 {
-  return {a1[0] / d, a1[1] / d};
+  return {a1[0] / f, a1[1] / f};
 }
 
-inline std::array<double, 2> operator*(std::array<double, 2> const& a1,
-                                       double d)
+inline ArrayF2 operator*(ArrayF2 const& a1, float f)
 {
-  return {a1[0] * d, a1[1] * d};
+  return {a1[0] * f, a1[1] * f};
 }
 
-inline void operator+=(std::array<double, 2>& a1,
-                       std::array<double, 2> const& a2)
+inline void operator+=(ArrayF2& a1, ArrayF2 const& a2)
 {
   a1[0] += a2[0];
   a1[1] += a2[1];
 }
 
-inline void operator/=(std::array<double, 2>& a1, double d)
+inline void operator/=(ArrayF2& a1, float f)
 {
-  a1[0] /= d;
-  a1[1] /= d;
+  a1[0] /= f;
+  a1[1] /= f;
 }
 
-inline void operator*=(std::array<double, 2>& a1, double d)
+inline void operator*=(ArrayF2& a1, float f)
 {
-  a1[0] *= d;
-  a1[1] *= d;
+  a1[0] *= f;
+  a1[1] *= f;
 }

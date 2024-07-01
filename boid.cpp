@@ -2,9 +2,9 @@
 #include "arrayop.hpp"
 #include "simulation.hpp"
 #include <cmath>
+#include <numeric>
 #include <random>
 #include <vector>
-#include <numeric>
 
 double euclidianNorm(ArrayD2 const& arr)
 {
@@ -14,19 +14,32 @@ double euclidianNorm(ArrayD2 const& arr)
   return norm;
 }
 
+void Boid::enforceSpeedLimit()
+{
+  double norm{euclidianNorm(m_velocity)};
+  if (norm > MAX_SPEED) {
+    m_velocity /= norm;
+    m_velocity *= MAX_SPEED;
+  }
+}
+
+std::default_random_engine eng;
+
 Boid::Boid()
 {
-  std::default_random_engine eng;
-  std::uniform_real_distribution<double> dist1(X_SPACE, Y_SPACE);
-  std::uniform_real_distribution<double> dist2(0., MAX_SPEED);
+  std::uniform_real_distribution<float> xPosDistribution(0, X_SPACE);
+  std::uniform_real_distribution<float> yPosDistribution(0, Y_SPACE);
+  std::uniform_real_distribution<float> xVelDistribution(0, MAX_SPEED);
+  std::uniform_real_distribution<float> yVelDistribution(0, MAX_SPEED);
 
-  ArrayD2 m_position = {dist1(eng), dist1(eng)};
-  ArrayD2 m_velocity = {dist2(eng), dist2(eng)};
+  m_position = {xPosDistribution(eng), yPosDistribution(eng)};
+  m_velocity = {xVelDistribution(eng), yVelDistribution(eng)};
+  enforceSpeedLimit();
 }
 
 void Boid::updateImpulse(std::vector<Boid> const& state)
 {
-  this->updateNeighbourhood(state);
+  updateNeighbourhood(state);
 
   ArrayD2 separationImp;
   ArrayD2 cohesionImp;
@@ -104,4 +117,9 @@ void Boid::updateNeighbourhood(std::vector<Boid> const& state)
       m_neighbourhood.push_back(Neighbour{&b, dist});
     }
   }
+}
+
+ArrayD2 const& Boid::getPosition() const
+{
+  return m_position;
 }
