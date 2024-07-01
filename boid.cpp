@@ -14,14 +14,14 @@ double euclidianNorm(ArrayD2 const& arr)
   return norm;
 }
 
-Boid::Boid()
+Boid::Boid(ArrayD2 position, ArrayD2 velocity) : m_position{position}, m_velocity{velocity}
 {
   std::default_random_engine eng;
   std::uniform_real_distribution<double> dist1(X_SPACE, Y_SPACE);
   std::uniform_real_distribution<double> dist2(0., MAX_SPEED);
 
-  ArrayD2 m_position = {dist1(eng), dist1(eng)};
-  ArrayD2 m_velocity = {dist2(eng), dist2(eng)};
+  position = {dist1(eng), dist1(eng)};
+  velocity = {dist2(eng), dist2(eng)};
 }
 
 void Boid::updateImpulse(std::vector<Boid> const& state)

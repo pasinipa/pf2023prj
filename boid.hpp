@@ -15,7 +15,7 @@ class Boid
 {
   friend class Statistics;
  public:
-  Boid();
+  Boid(ArrayD2 position, ArrayD2 velocity);
 
   void updateImpulse(std::vector<Boid> const& state);
   void updatePosition();
