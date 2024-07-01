@@ -4,6 +4,7 @@
 #include <array>
 #include <cstddef>
 #include <numeric>
+#include <cmath>
 
 double euclidianNorm(ArrayD2 const& arr)
 {
@@ -51,7 +52,7 @@ void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
   }
 }
 
-void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
+auto Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
 {
   /*
     double mean_velN{0};
@@ -68,17 +69,72 @@ void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
       cout << " the mean velocity at time " << time << " is " << mean_Vel;
     }
   */
-  for (int t{0}; t < time; t += 5) {
+  double mean_Vel;
+
+  for (int t{0}; t < time; t += 5) 
+  {
     double mean_velN{0};
-    for (auto b : state) {
+    for (auto b : state) 
+    {
       double deltaV = euclidianNorm(b.m_velocity);
       mean_velN += deltaV;
     }
 
+    mean_Vel = mean_velN / std::size(state);
+
     std::cout << "The mean velocity at time " << t << " is "
-              << mean_velN / std::size(state) << '\n';
+              << mean_Vel << '\n';
   }
+
+return mean_Vel;
+
 }
 
-void Statistics::Sdeviation(int time, std::vector<Boid> const& state)
-{}
+void Statistics::Sdeviation_vel(int time, std::vector<Boid> const& state)
+{
+  auto Sdev_V;
+  auto vel_media = Statistics::Mean_velocity();
+  double sum_quadrati = 0;
+  for (int t{0}; t < time; t += 5) 
+  {
+    for (auto b : state) 
+    {
+      sum_quadrati = sum_quadrati + std::pow(vel_media - euclidianNorm(b.m_velocity),2); //pow richiede 2 argomenti prima base, poi esponente
+    }
+
+  Sdev_V = std::sqrt(sum_quadrati/(std::size(state)-1));
+
+  }
+
+  std::cout << "The Standard deviation of the velocity at time " << t << " is "
+              << Sdev_V << '\n';
+}
+
+void Statistics::Sdeviation_vel(int time, std::vector<Boid> const& state)
+{
+  auto Sdev_D;
+  auto dist_media = Statistics::Mean_distance();
+  double sum_quadrati = 0;
+  double N_tot_dev = 0; //N al denominatore della deviazione standard
+
+  for (int t{0}; t < time; t += 5)
+  {
+    for (int i{0}; i < std::size(state); ++i) 
+    {
+      for (int j{i + 1}; j <= std::size(state); ++j) 
+      {
+        sum_quadrati = sum_quadrati + std::pow((dist_media - euclidianNorm(state[i].m_position - state[j].m_position)),2);
+
+        N_tot_dev += 1;
+      }
+
+      N_tot_dev += 1;
+    }
+  Sdev_D = std::sqrt(sum_quadrati/(N_tot_dev-1));
+
+  //Sdev_D = std::sqrt(sum_quadrati/((std::size(state)*(std::size(state)-1)-1))); //quante coppie posso fare con N elementi senza ripetiziono
+
+  }
+  std::cout << "The Standard deviation of the distance at time " << t << " is "
+              << Sdev_D << '\n';
+}
