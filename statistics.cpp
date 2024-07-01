@@ -36,17 +36,19 @@ void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
       }
   */
 
-  double mean_distN{0};
-  for (int i{0}; i < std::size(state); ++i) {
-    for (int j{i + 1}; j <= std::size(state); ++j) {
-      double distance =
-          euclidianNorm(state[i].m_position - state[j].m_position);
-      mean_distN += distance;
+  for (int t{0}; t < time; t += 5) {
+    double mean_distN{0};
+    for (int i{0}; i < std::size(state); ++i) {
+      for (int j{i + 1}; j <= std::size(state); ++j) {
+        double distance =
+            euclidianNorm(state[i].m_position - state[j].m_position);
+        mean_distN += distance;
+      }
     }
-  }
 
-  std::cout << "The mean distance at time " << time << " is "
-            << mean_distN / std::size(state) << '\n';
+    std::cout << "The mean distance at time " << time << " is "
+              << mean_distN / std::size(state) << '\n';
+  }
 }
 
 void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
@@ -66,15 +68,16 @@ void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
       cout << " the mean velocity at time " << time << " is " << mean_Vel;
     }
   */
+  for (int t{0}; t < time; t += 5) {
+    double mean_velN{0};
+    for (auto b : state) {
+      double deltaV = euclidianNorm(b.m_velocity);
+      mean_velN += deltaV;
+    }
 
-  double mean_velN{0};
-  for (auto b : state) {
-    double deltaV = euclidianNorm(b.m_velocity);
-    mean_velN += deltaV;
+    std::cout << "The mean velocity at time " << time << " is "
+              << mean_velN / std::size(state) << '\n';
   }
-
-  std::cout << "The mean velocity at time " << time << " is "
-            << mean_velN / std::size(state) << '\n';
 }
 
 void Statistics::Sdeviation(int time, std::vector<Boid> const& state)
