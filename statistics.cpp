@@ -46,7 +46,7 @@ void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
       }
     }
 
-    std::cout << "The mean distance at time " << time << " is "
+    std::cout << "The mean distance at time " << t << " is "
               << mean_distN / std::size(state) << '\n';
   }
 }
@@ -75,7 +75,7 @@ void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
       mean_velN += deltaV;
     }
 
-    std::cout << "The mean velocity at time " << time << " is "
+    std::cout << "The mean velocity at time " << t << " is "
               << mean_velN / std::size(state) << '\n';
   }
 }
