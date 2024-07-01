@@ -37,13 +37,10 @@ void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
   */
 
   double mean_distN{0};
-  for (auto b : state) {
-    for (auto c : state) {
-      if (&c == &b) {
-        continue;
-      }
-
-      double distance = euclidianNorm(b.m_position - c.m_position);
+  for (int i{0}; i < std::size(state); ++i) {
+    for (int j{i + 1}; j <= std::size(state); ++j) {
+      double distance =
+          euclidianNorm(state[i].m_position - state[j].m_position);
       mean_distN += distance;
     }
   }
@@ -54,30 +51,30 @@ void Statistics::Mean_distance(int time, std::vector<Boid> const& state)
 
 void Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
 {
-/*    
+  /*
+    double mean_velN{0};
+    auto velocity;
+    for (time % 10 = 0) {
+      for (int i = 0; i < std::size(state); i++) {
+        velocity                                       = state.m_velocity[i];
+        oppure i lo passo by reference ? (*i)mean_velN =
+    +euclidianNorm(velocity);
+      }
+
+      float mean_Vel = mean_velN / std::size(state);
+
+      cout << " the mean velocity at time " << time << " is " << mean_Vel;
+    }
+  */
+
   double mean_velN{0};
-  auto velocity;
-  for (time % 10 = 0) {
-    for (int i = 0; i < std::size(state); i++) {
-      velocity                                       = state.m_velocity[i];
-      oppure i lo passo by reference ? (*i)mean_velN = +euclidianNorm(velocity);
-    }
-
-    float mean_Vel = mean_velN / std::size(state);
-
-    cout << " the mean velocity at time " << time << " is " << mean_Vel;
+  for (auto b : state) {
+    double deltaV = euclidianNorm(b.m_velocity);
+    mean_velN += deltaV;
   }
-*/
-
-double mean_velN{0};
-for (auto b : state) {
-      double deltaV = euclidianNorm(b.m_velocity);
-      mean_velN += deltaV;
-    }
 
   std::cout << "The mean velocity at time " << time << " is "
-            << mean_velN / std::size(state) << '\n';    
-
+            << mean_velN / std::size(state) << '\n';
 }
 
 void Statistics::Sdeviation(int time, std::vector<Boid> const& state)
