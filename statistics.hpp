@@ -3,7 +3,8 @@
 
 class Statistics 
 {
-    void Mean_distance(int time, std::vector<Boid> const& state);
-    void Mean_velocity(int time, std::vector<Boid> const& state);
-    void Sdeviation(int time, std::vector<Boid> const& state);
+    double Mean_distance(int time, std::vector<Boid> const& state);
+    double Mean_velocity(int time, std::vector<Boid> const& state);
+    void Sdeviation_vel(int time, std::vector<Boid> const& state);
+    void Sdeviation_dis(int time, std::vector<Boid> const& state);
 };
