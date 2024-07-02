@@ -27,9 +27,6 @@ double Statistics::Mean_distance(int time, std::vector<Boid> const& state)
         mean_distN += distance;
       }
     }
-
-    std::cout << "The mean distance at time " << t << " is "
-              << mean_distN / std::size(state) << '\n';
   }
 
   return mean_dist;
@@ -48,19 +45,17 @@ double Statistics::Mean_velocity(int time, std::vector<Boid> const& state)
     }
 
     mean_vel = mean_velN / std::size(state);
-
-    std::cout << "The mean velocity at time " << t << " is " << mean_vel
-              << '\n';
   }
 
   return mean_vel;
 }
 
-void Statistics::Sdeviation_vel(int time, std::vector<Boid> const& state)
+double Statistics::Sdeviation_vel(int time, std::vector<Boid> const& state)
 {
-  double Sdev_V;
+  double Sdev_V{0};
   auto vel_media = Statistics::Mean_velocity(time, state);
   double sum_quadrati{0};
+
   for (int t{0}; t < time; t += 5) {
     for (auto b : state) {
       sum_quadrati =
@@ -70,13 +65,12 @@ void Statistics::Sdeviation_vel(int time, std::vector<Boid> const& state)
     }
 
     Sdev_V = std::sqrt(sum_quadrati / (std::size(state) - 1));
-
-    std::cout << "The Standard deviation of the velocity at time " << t
-              << " is " << Sdev_V << '\n';
   }
+
+  return Sdev_V;
 }
 
-void Statistics::Sdeviation_dis(int time, std::vector<Boid> const& state)
+double Statistics::Sdeviation_dis(int time, std::vector<Boid> const& state)
 {
   double Sdev_D{0};
   double dist_media = Statistics::Mean_distance(time, state);
@@ -96,13 +90,13 @@ void Statistics::Sdeviation_dis(int time, std::vector<Boid> const& state)
       }
       N_tot_dev += 1;
     }
+
     Sdev_D = std::sqrt(sum_quadrati / (N_tot_dev - 1));
 
     // Sdev_D =
     // std::sqrt(sum_quadrati/((std::size(state)*(std::size(state)-1)-1)));
     // //quante coppie posso fare con N elementi senza ripetiziono
-
-    std::cout << "The Standard deviation of the distance at time " << t
-              << " is " << Sdev_D << '\n';
   }
+
+  return Sdev_D;
 }
