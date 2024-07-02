@@ -17,7 +17,7 @@ double euclidianNorm(ArrayD2 const& arr)
 Boid::Boid(ArrayD2 position, ArrayD2 velocity) : m_position{position}, m_velocity{velocity}
 {
   std::default_random_engine eng;
-  std::uniform_real_distribution<double> dist1(X_SPACE, Y_SPACE);
+  std::uniform_real_distribution<double> dist1(0., Y_SPACE);
   std::uniform_real_distribution<double> dist2(0., MAX_SPEED);
 
   position = {dist1(eng), dist1(eng)};
