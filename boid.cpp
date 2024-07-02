@@ -62,6 +62,11 @@ void Boid::wallDeviation(std::vector<Wall> const& wallsConfig)
   }
 }
 
+void Boid::edgeBounce() {
+  if (((m_position + m_velocity)[0] >= X_SPACE) || ((m_position + m_velocity)[0] <= 0)) m_impulse[0] *= -1;
+  if (((m_position + m_velocity)[1] >= Y_SPACE) || ((m_position + m_velocity)[1] <= 0)) m_impulse[1] *= -1;
+}
+
 void Boid::updatePosition()
 {
   m_position += m_velocity;

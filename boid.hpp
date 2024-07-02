@@ -21,6 +21,7 @@ class Boid
   void updatePosition();
   void updateVelocity();
   void wallDeviation(std::vector<Wall> const& wallsConfig);
+  void edgeBounce();
 
  private:
   using Neighbour = std::pair<Boid*, double>;
