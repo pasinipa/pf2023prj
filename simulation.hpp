@@ -14,6 +14,7 @@ class Simulation
 
   static SimPars parameters;
 
+  // !! REMEMBER TO PUT THIS PRIVATE AGAIN !!
   std::vector<Boid> state;
   std::vector<Wall> wallsConfig;
 

@@ -2,11 +2,11 @@
 
 struct SimPars
 {
-  double ds{1};
-  double d{20};
-  double s{5};
-  double a{0.7};
-  double c{0.3};
+  float ds{1.f};
+  float d{20.f};
+  float s{5.f};
+  float a{0.1f};
+  float c{1.f};
   int bNum{10};
   bool isVerbose{false};
   double w{}; //wall's impulse

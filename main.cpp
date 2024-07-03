@@ -27,30 +27,30 @@ bool handleCLInput(int argc, char* const argv[])
       Simulation::parameters.bNum = std::atoi(optarg);
       break;
     case 'D':
-      Simulation::parameters.d = std::stod(std::string(optarg));
+      Simulation::parameters.d = std::stof(std::string(optarg));
       break;
     case 'd':
-      Simulation::parameters.ds = std::stod(std::string(optarg));
+      Simulation::parameters.ds = std::stof(std::string(optarg));
       break;
     case 's':
-      Simulation::parameters.s = std::stod(std::string(optarg));
+      Simulation::parameters.s = std::stof(std::string(optarg));
       break;
     case 'a':
-      Simulation::parameters.a = std::stod(std::string(optarg));
+      Simulation::parameters.a = std::stof(std::string(optarg));
       break;
     case 'c':
-      Simulation::parameters.c = std::stod(std::string(optarg));
+      Simulation::parameters.c = std::stof(std::string(optarg));
       break;
     case 'h':
     default:
       std::cout << "usage: you used it wrong, dumbass";
-      return 0;
+      return false;
     case EOF:
       isFetchingOpt = false;
       break;
     }
   }
-  return 1;
+  return true;
 }
 
 int main(int argc, char* const argv[])
@@ -64,7 +64,7 @@ int main(int argc, char* const argv[])
   window.setVerticalSyncEnabled(true);
 
   sf::Font robotoRegular;
-  robotoRegular.loadFromFile("Roboto/Roboto-Regular.ttf");
+  robotoRegular.loadFromFile("Roboto-Regular.ttf");
   sf::Text text;
   text.setFont(robotoRegular);
   text.setCharacterSize(24);
@@ -93,5 +93,8 @@ int main(int argc, char* const argv[])
     window.draw(text);
     sim.updateView(window);
     window.display();
+
+    if (Simulation::parameters.isVerbose)
+      std::cin.get();
   }
 }

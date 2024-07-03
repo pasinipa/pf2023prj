@@ -5,16 +5,17 @@
 #include <vector>
 #include "walls.hpp"
 
-const double X_SPACE{800.};
-const double Y_SPACE{600.};
-const double MAX_SPEED{1.};
+const float X_SPACE{800.};
+const float Y_SPACE{600.};
+const float MAX_SPEED{1.};
 
-using ArrayD2 = std::array<float, 2>;
+using ArrayF2 = std::array<float, 2>;
 
 class Boid
 {
   friend class Statistics;
  public:
+  Boid();
   Boid(ArrayD2 position, ArrayD2 velocity);
 
   void updateImpulse(std::vector<Boid> const& state);
@@ -22,20 +23,16 @@ class Boid
   void updateVelocity();
   void wallDeviation(std::vector<Wall> const& wallsConfig);
   void edgeBounce();
-
-  ArrayD2 const& getPosition() const;
+  ArrayF2 const& getPosition() const;
 
  private:
-  using Neighbour = std::pair<Boid*, double>;
-
+  using Neighbour = std::pair<Boid const*, float>;
   std::vector<Neighbour> m_neighbourhood;
-  ArrayD2 m_position;
-  ArrayD2 m_velocity;
-  ArrayD2 m_impulse;
+  ArrayF2 m_position;
+  ArrayF2 m_velocity;
+  ArrayF2 m_impulse;
 
+  void enforceToroidalSpace();
   void enforceSpeedLimit();
   void updateNeighbourhood(std::vector<Boid> const& state);
-  ArrayD2 separationImpulse();
-  ArrayD2 allignmentImpulse();
-  ArrayD2 cohesionImpulse();
 };

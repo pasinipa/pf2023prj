@@ -3,12 +3,12 @@ project(boid_simulator VERSION 1.0)
 
 
 # abilita il supporto per i test, tra cui l'opzione BUILD_TESTING usata sotto
-include(CTest)
+#include(CTest)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # richiedi l'uso di C++17, senza estensioni non-standard offerte dal compilatore usato
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -23,14 +23,13 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 
 # richiedi il componente graphics della libreria SFML, versione 2.5
 #   le dipendenze vengono identificate automaticamente
-#find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
-
+find_package(SFML 2.5 COMPONENTS window graphics REQUIRED)
 add_executable(final main.cpp boid.cpp simulation.cpp)
-#target_link_libraries(mandelbrot PRIVATE sfml-graphics)
+target_link_libraries(final PRIVATE sfml-window sfml-graphics)
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
-if (BUILD_TESTING)
+#if (BUILD_TESTING)
 
   # aggiungi l'eseguibile all.t
   # add_executable(all.t all.t.cpp complex.t.cpp)
@@ -38,4 +37,4 @@ if (BUILD_TESTING)
   # add_test(NAME all.t COMMAND all.t)
   # add_executable(test main.cpp boid.cpp simulation.cpp)
 
-endif()
+#endif()
