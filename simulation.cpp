@@ -8,6 +8,9 @@ void Simulation::updateState()
 {
   for (auto& b : state) {
     b.updateImpulse(state);
+    //some way to determine the closest (if not the only) wall, say w1
+    b.wallDeviation(wallsConfig);
+    b.edgeBounce();
   }
   for (auto& b : state) {
     b.updatePosition();

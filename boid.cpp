@@ -64,26 +64,21 @@ void Boid::updateImpulse(std::vector<Boid> const& state)
   return;
 }
 
-/*
-ArrayD2 Boid::wallbounce ( pars) const {
-    ArrayD2 Wcorrection{ 0., 0. };
-    if (m_position[0] > 99) {
-        // wall = ...
-        Wcorrection *= (100 - m_position[0]);
+void Boid::wallDeviation(std::vector<Wall> const& wallsConfig)
+{
+  for (auto w : wallsConfig) {
+    double dist = euclidianNorm(m_position - w.w_position);
+    if (dist < w.radius) {
+      ArrayD2 wallDev = (m_position - w.w_position) * 1/(dist * euclidianNorm(m_position)) * Simulation::parameters.w;
+      m_impulse += wallDev;
     }
-    if (m_position[0] < 1) {
-        // wall = ...
-        Wcorrection *= m_position[0];
-    }
-    if (m_position[1] > 99) {
-    }
-    if (m_position[1] < 1) {
-    }
-    return Wcorrection;
+  }
 }
 
-sarebbe bello fare la spinta proporzionale alla distanza dal muro
-*/
+void Boid::edgeBounce() {
+  if (((m_position + m_velocity)[0] >= X_SPACE) || ((m_position + m_velocity)[0] <= 0)) m_velocity[0] *= -1;
+  if (((m_position + m_velocity)[1] >= Y_SPACE) || ((m_position + m_velocity)[1] <= 0)) m_velocity[1] *= -1;
+}
 
 void Boid::updatePosition()
 {
