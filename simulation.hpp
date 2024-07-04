@@ -16,7 +16,7 @@ class Simulation
 
   // !! REMEMBER TO PUT THIS PRIVATE AGAIN !!
   std::vector<Boid> state;
-  std::vector<Wall> wallsConfig;
+  // std::vector<Wall> wallsConfig;
 
  private:
   long long time{0};

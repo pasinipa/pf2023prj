@@ -60,7 +60,7 @@ int main(int argc, char* const argv[])
   Simulation sim;
 
   sf::RenderWindow window;
-  window.create(sf::VideoMode(800, 600), "My window", sf::Style::Close);
+  window.create(sf::VideoMode(1600, 900), "Boid Simulator", sf::Style::Close);
   window.setVerticalSyncEnabled(true);
 
   sf::Font robotoRegular;
@@ -90,7 +90,7 @@ int main(int argc, char* const argv[])
     }
 
     window.clear();
-    window.draw(text);
+    //window.draw(text);
     sim.updateView(window);
     window.display();
 

@@ -2,14 +2,14 @@
 
 struct SimPars
 {
-  float ds{1.f};
-  float d{20.f};
-  float s{5.f};
-  float a{0.1f};
-  float c{1.f};
-  int bNum{10};
+  float ds{15.f};
+  float d{40.f};
+  float s{15.f};
+  float a{1.f};
+  float c{0.01f};
+  int bNum{200};
   bool isVerbose{false};
-  double w{}; //wall's impulse
+  double w{}; // wall's impulse
 
   SimPars() = default;
 };
