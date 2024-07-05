@@ -2,14 +2,15 @@
 
 struct SimPars
 {
-  float ds{15.f};
-  float d{40.f};
-  float s{15.f};
-  float a{1.f};
-  float c{0.01f};
-  int bNum{200};
+  int boidNumber{200};
+  float perceptionRadius{40.f};
+  float separationRuleRadius{15.f};
+  float separationRuleStrength{15.f};
+  float allignmentRuleStrength{1.f};
+  float cohesionRuleStrength{0.01f};
+  float obstacleRuleRadius{0.f};
+  float obstacleRuleStrength{0.f};
   bool isVerbose{false};
-  double w{}; // wall's impulse
 
   SimPars() = default;
 };

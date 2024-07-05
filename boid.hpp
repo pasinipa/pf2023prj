@@ -2,8 +2,8 @@
 #include "simpars.hpp"
 #include <array>
 #include <iostream>
+#include <variant>
 #include <vector>
-// #include "walls.hpp"
 
 const float X_SPACE{1600.f};
 const float Y_SPACE{900.f};
@@ -12,31 +12,36 @@ const float MAX_IMPULSE{0.06f};
 
 using ArrayF2 = std::array<float, 2>;
 
+struct Obstacle
+{
+  ArrayF2 position;
+};
+
 class Boid
 {
-  friend class Statistics;
-
  public:
   Boid();
-  // Boid(ArrayD2 position, ArrayD2 velocity);
-
-  void updateImpulse(std::vector<Boid> const& state);
   void updatePosition();
   void updateVelocity();
-  /*
-    void wallDeviation(std::vector<Wall> const& wallsConfig);
-    void edgeBounce();
-   */
+  void updateImpulse(std::vector<Boid> const& flock,
+                     std::vector<Obstacle> const& obstacles);
   ArrayF2 const& getPosition() const;
 
  private:
-  using Neighbour = std::pair<Boid const&, float>;
+  using Neighbour    = std::pair<Boid const&, float>;
+  using NearObstacle = std::pair<Obstacle const&, float>;
+
   std::vector<Neighbour> m_neighbourhood;
+  std::vector<NearObstacle> m_nearObstacles;
   ArrayF2 m_position;
   ArrayF2 m_velocity;
   ArrayF2 m_impulse;
 
+  ArrayF2 impulseFromNeighbours();
+  ArrayF2 impulseFromObstacles();
   void enforceToroidalSpace();
-  void enforceSpeedLimit();
-  void updateNeighbourhood(std::vector<Boid> const& state);
+  // da modificare
+  void edgeBounce();
+  void updateSurroundings(std::vector<Boid> const& state,
+                          std::vector<Obstacle> const& obstacles);
 };

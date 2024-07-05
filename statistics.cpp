@@ -6,13 +6,7 @@
 #include <cstddef>
 #include <numeric>
 
-double euclidianNorm(ArrayD2 const& arr)
-{
-  double norm{0};
-  norm = std::inner_product(arr.begin(), arr.end(), arr.begin(), 0.);
-  norm = std::sqrt(norm);
-  return norm;
-}
+double euclidianNorm(ArrayD2 const& arr);
 
 double Statistics::Mean_distance(int time, std::vector<Boid> const& state)
 {
@@ -28,7 +22,6 @@ double Statistics::Mean_distance(int time, std::vector<Boid> const& state)
       }
     }
   }
-
   return mean_dist;
 }
 

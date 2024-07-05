@@ -8,38 +8,37 @@
 #include <string>
 
 SimPars Simulation::parameters;
-
-// enum class UserMode { SpawnBoids = 0, SpawnObstacles, ClearBoids, ClearWalls
-// };
+auto const& parameters { Simulation::parameters };
 
 bool handleCLInput(int argc, char* const argv[])
 {
   bool isFetchingOpt{true};
+  auto& p {Simulation::parameters};
 
   while (isFetchingOpt) {
     int c{getopt(argc, argv, "hvn:D:d:s:a:c:")};
 
     switch (c) {
     case 'v':
-      Simulation::parameters.isVerbose = true;
+      p.isVerbose = true;
       break;
     case 'n':
-      Simulation::parameters.bNum = std::atoi(optarg);
+      p.boidNumber = std::atoi(optarg);
       break;
     case 'D':
-      Simulation::parameters.d = std::stof(std::string(optarg));
+      p.perceptionRadius = std::stof(std::string(optarg));
       break;
     case 'd':
-      Simulation::parameters.ds = std::stof(std::string(optarg));
+      p.separationRuleRadius = std::stof(std::string(optarg));
       break;
     case 's':
-      Simulation::parameters.s = std::stof(std::string(optarg));
+      p.separationRuleStrength = std::stof(std::string(optarg));
       break;
     case 'a':
-      Simulation::parameters.a = std::stof(std::string(optarg));
+      p.allignmentRuleStrength = std::stof(std::string(optarg));
       break;
     case 'c':
-      Simulation::parameters.c = std::stof(std::string(optarg));
+      p.cohesionRuleStrength = std::stof(std::string(optarg));
       break;
     case 'h':
     default:
@@ -90,11 +89,11 @@ int main(int argc, char* const argv[])
     }
 
     window.clear();
-    //window.draw(text);
+    // window.draw(text);
     sim.updateView(window);
     window.display();
 
-    if (Simulation::parameters.isVerbose)
+    if (parameters.isVerbose)
       std::cin.get();
   }
 }
