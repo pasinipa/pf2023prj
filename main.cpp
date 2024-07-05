@@ -47,6 +47,9 @@ bool handleCLInput(int argc, char* const argv[])
     case EOF:
       isFetchingOpt = false;
       break;
+      case 'e':
+      Simulation::parameters.edges = true;
+      break; 
     }
   }
   return true;

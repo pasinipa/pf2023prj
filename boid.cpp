@@ -114,6 +114,7 @@ void Boid::updateImpulse(std::vector<Boid> const& flock,
   updateSurroundings(flock, obstacles);
   m_impulse = impulseFromNeighbours() + impulseFromObstacles();
   limitNorm(m_impulse, MAX_IMPULSE);
+  if (Simulation::parameters.edges == true) edgeBounce();
 }
 
 /*
@@ -127,18 +128,17 @@ euclidianNorm(m_position)) * Simulation::parameters.w; m_impulse += wallDev;
     }
   }
 }
-
+*/
 void Boid::edgeBounce() {
-  if (((m_position + m_velocity)[0] >= X_SPACE) || ((m_position +
-m_velocity)[0] <= 0)) m_velocity[0] *= -1; if (((m_position + m_velocity)[1]
->= Y_SPACE) || ((m_position + m_velocity)[1] <= 0)) m_velocity[1] *= -1;
+  if (((m_position + m_velocity)[0] >= X_SPACE) || ((m_position + m_velocity)[0] <= 0)) m_velocity[0] *= -1; 
+  if (((m_position + m_velocity)[1] >= Y_SPACE) || ((m_position + m_velocity)[1] <= 0)) m_velocity[1] *= -1;
 }
- */
+ 
 
 void Boid::updatePosition()
 {
   m_position += m_velocity;
-  enforceToroidalSpace();
+  if (Simulation::parameters.edges == false) enforceToroidalSpace();
 }
 
 void Boid::updateVelocity()

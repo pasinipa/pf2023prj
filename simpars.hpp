@@ -11,6 +11,7 @@ struct SimPars
   float obstacleRuleRadius{0.f};
   float obstacleRuleStrength{0.f};
   bool isVerbose{false};
+  bool edges{false};
 
   SimPars() = default;
 };
