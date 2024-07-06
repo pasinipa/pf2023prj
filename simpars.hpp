@@ -17,17 +17,13 @@ struct SimPars
   float obstacleStrength{3.f};
   bool boundariesEnabled{false};
 
-  inline void checkValidity() {
-    if (boidNumber < 0
-            or sampleRate < 0
-            or perceptionRadius < 0.f
-            or separationRadius < 0.f
-            or separationStrength < 0.f
-            or allignmentStrength < 0.f
-            or cohesionStrength < 0.f
-            or obstacleRadius < 0.f
-            or obstacleStrength < 0.f)
-        throw std::invalid_argument {"check for any negative values."};
+  inline void checkValidity()
+  {
+    if (boidNumber < 0 or sampleRate < 0 or perceptionRadius < 0.f
+        or separationRadius < 0.f or separationStrength < 0.f
+        or allignmentStrength < 0.f or cohesionStrength < 0.f
+        or obstacleRadius < 0.f or obstacleStrength < 0.f)
+      throw std::invalid_argument{"check for any negative values."};
   }
 };
 

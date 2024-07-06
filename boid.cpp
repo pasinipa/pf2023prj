@@ -18,7 +18,7 @@ float euclidianNorm(ArrayF2 const& arr)
 
 void setMagnitude(ArrayF2& arr, float magnitude)
 {
-  float norm { euclidianNorm(arr) };
+  float norm{euclidianNorm(arr)};
   if (norm != 0.f) {
     arr /= norm;
     arr *= magnitude;
@@ -66,7 +66,7 @@ Boid::Boid()
 
 ArrayF2 Boid::impulseFromNeighbours()
 {
-  ArrayF2 neighbourImp {0.f, 0.f};
+  ArrayF2 neighbourImp{0.f, 0.f};
   if (m_neighbourhood.empty())
     return neighbourImp;
 
@@ -109,8 +109,7 @@ ArrayF2 Boid::impulseFromObstacles()
 
   for (auto const& o : m_nearObstacles) {
     auto [obstacle, distToObstacle] = o;
-    if (distToObstacle != 0.f
-        and distToObstacle < parameters.obstacleRadius) {
+    if (distToObstacle != 0.f and distToObstacle < parameters.obstacleRadius) {
       ArrayF2 repulsionFromObstacle{m_position - obstacle.position};
       setMagnitude(repulsionFromObstacle, 1 / distToObstacle);
       obstacleImp += repulsionFromObstacle;
@@ -140,9 +139,10 @@ void Boid::enforceBoundaries()
 void Boid::updatePosition()
 {
   m_position += m_velocity;
-  if (parameters.boundariesEnabled) 
-      enforceBoundaries();
-  else enforceToroidalSpace();
+  if (parameters.boundariesEnabled)
+    enforceBoundaries();
+  else
+    enforceToroidalSpace();
 }
 
 void Boid::updateVelocity()

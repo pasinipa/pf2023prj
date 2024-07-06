@@ -35,7 +35,7 @@ inline void operator+=(ArrayF2& a1, ArrayF2 const& a2)
 
 inline void operator/=(ArrayF2& a1, float f)
 {
-  if (f != 0.f) { 
+  if (f != 0.f) {
     a1[0] /= f;
     a1[1] /= f;
   }

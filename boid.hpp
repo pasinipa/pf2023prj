@@ -49,4 +49,8 @@ class Boid
   void updateSurroundings(std::vector<Boid> const& state,
                           std::vector<Obstacle> const& obstacles);
 };
+
+float euclidianNorm(ArrayF2 const&);
+void setMagnitude(ArrayF2& arr, float magnitude);
+
 #endif

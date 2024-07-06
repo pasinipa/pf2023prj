@@ -2,7 +2,6 @@
 #include "doctest.h"
 #include <chrono>
 #include <random>
-#define private public
 
 #include "arrayop.hpp"
 #include "boid.hpp"
@@ -13,16 +12,14 @@ auto const& parameters{Simulation::parameters};
 
 TEST_CASE("Testing array operations")
 {
-  ArrayF2 a1{1., 3.};
-  ArrayF2 a2{-2., 0.};
-  float k = 2.;
+  ArrayF2 a1{1.f, 3.f};
+  ArrayF2 a2{-2.f, 0.f};
+  float k{2.f};
 
-  auto sum  = a1 + a2;
-  auto diff = a1 - a2;
-  auto prod = a1 * k;
-  auto quot =
-      a2
-      / k; // a voler essere precisi bisognerebbe escludere che divida per 0...
+  auto sum{a1 + a2};
+  auto diff{a1 - a2};
+  auto prod{a1 * k};
+  auto quot{a2 / k};
 
   CHECK(sum == ArrayF2{-1., 3.});
   CHECK(diff == ArrayF2{3., 3.});
@@ -44,15 +41,13 @@ TEST_CASE("TESTING STATISTICS")
                                 Boid{{4., 2.}, {0., 1.}},
                                 Boid{{1., 6.}, {0., 1.}}};
 
-    Simulation sim{testFlock};
-    FlightStatistics stat{sim.gatherData()};
+    FlightStatistics stat{gatherData(testFlock)};
+
     CHECK(stat.meanDist == 4);
+    CHECK(stat.stdDevDist == doctest::Approx(0.816).epsilon(0.001));
 
     CHECK(stat.meanVel[0] == 0.);
     CHECK(stat.meanVel[1] == 1.);
-
-    CHECK(stat.stdDevDist == doctest::Approx(0.816).epsilon(0.001));
-
     CHECK(stat.stdDevVel[0] == 0.);
     CHECK(stat.stdDevVel[1] == 0.);
   }
@@ -63,15 +58,13 @@ TEST_CASE("TESTING STATISTICS")
                                 Boid{{4., -2.}, {0., 1.}},
                                 Boid{{1., -6.}, {0., 1.}}};
 
-    Simulation sim{testFlock};
-    FlightStatistics stat{sim.gatherData()};
+    FlightStatistics stat{gatherData(testFlock)};
+
     CHECK(stat.meanDist == doctest::Approx(6.550).epsilon(0.001));
+    CHECK(stat.stdDevDist == doctest::Approx(1.329).epsilon(0.001));
 
     CHECK(stat.meanVel[0] == 0.);
     CHECK(stat.meanVel[1] == 1.);
-
-    CHECK(stat.stdDevDist == doctest::Approx(1.329).epsilon(0.001));
-
     CHECK(stat.stdDevVel[0] == 0.);
     CHECK(stat.stdDevVel[1] == 0.);
   }
@@ -82,15 +75,13 @@ TEST_CASE("TESTING STATISTICS")
                                 Boid{{4., 2.}, {1., -4.}},
                                 Boid{{1., 6.}, {0., 1.}}};
 
-    Simulation sim{testFlock};
-    FlightStatistics stat{sim.gatherData()};
+    FlightStatistics stat{gatherData(testFlock)};
+
     CHECK(stat.meanDist == 4);
+    CHECK(stat.stdDevDist == doctest::Approx(0.816).epsilon(0.001));
 
     CHECK(stat.meanVel[0] == doctest::Approx(0.333).epsilon(0.001));
     CHECK(stat.meanVel[1] == doctest::Approx(-1.333).epsilon(0.001));
-
-    CHECK(stat.stdDevDist == doctest::Approx(0.816).epsilon(0.001));
-
     CHECK(stat.stdDevVel[0] == doctest::Approx(0.471).epsilon(0.001));
     CHECK(stat.stdDevVel[1] == doctest::Approx(2.055).epsilon(0.001));
   }

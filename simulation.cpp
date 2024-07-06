@@ -12,7 +12,8 @@ Simulation::Simulation(std::vector<Boid> const& f)
 Simulation::Simulation()
     : flock{std::vector<Boid>(
         static_cast<unsigned long>(parameters.boidNumber))}
-    , obstacles{std::vector<Obstacle>(static_cast<unsigned long>(parameters.obstacleNumber))}
+    , obstacles{std::vector<Obstacle>(
+          static_cast<unsigned long>(parameters.obstacleNumber))}
 {}
 
 void Simulation::updateState()
@@ -48,7 +49,7 @@ void Simulation::updateView(sf::RenderWindow& window) const
 void Simulation::streamStatsToFile(std::ofstream& outputFile) const
 {
   if (time % parameters.sampleRate == 0 and outputFile.is_open()) {
-    FlightStatistics stats{gatherData()};
+    FlightStatistics stats{gatherData(flock)};
     outputFile << std::fixed << std::setprecision(3) << std::setfill(' ');
     outputFile << "| " << std::setw(6) << time;
     outputFile << " | " << std::setw(6) << stats.meanDist;
@@ -61,23 +62,23 @@ void Simulation::streamStatsToFile(std::ofstream& outputFile) const
   }
 }
 
-float euclidianNorm(ArrayF2 const&);
-
-FlightStatistics Simulation::gatherData() const
+FlightStatistics gatherData(std::vector<Boid> const& flock)
 {
   float meanDist{0.f};
   float meanSquaredDist{0.f};
   ArrayF2 meanVel{0.f, 0.f};
   ArrayF2 meanSquaredVel{0.f, 0.f};
-  float flockSize { static_cast<float>(flock.size())};
+  float flockSize{static_cast<float>(flock.size())};
+  if (flockSize == 0.f)
+    return {0.f, 0.f, {0.f, 0.f}, {0.f, 0.f}};
+  if (flockSize == 1.f)
+    return {0.f, 0.f, flock.front().getVelocity(), {0.f, 0.f}};
 
   for (auto it = flock.begin(); it != flock.end(); ++it) {
     ArrayF2 vel{it->getVelocity()};
     meanVel += vel;
     meanSquaredVel += {std::pow(vel[0], 2.f), std::pow(vel[1], 2.f)};
 
-    if (flockSize < 2)
-        continue;
     for (auto jt = it + 1; jt != flock.end(); ++jt) {
       float dist = euclidianNorm(it->getPosition() - jt->getPosition());
       meanDist += dist;
@@ -85,7 +86,7 @@ FlightStatistics Simulation::gatherData() const
     }
   }
   // combinations without repetitions of flock.size() elements
-  float nDist{( flockSize * (flockSize - 1)) / 2.f};
+  float nDist{(flockSize * (flockSize - 1)) / 2.f};
   meanDist /= nDist;
   meanSquaredDist /= nDist;
   meanVel /= flockSize;

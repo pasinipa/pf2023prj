@@ -5,8 +5,8 @@
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 SimPars Simulation::parameters;
 auto const& parameters{Simulation::parameters};
@@ -51,10 +51,10 @@ void handleCLInput(int argc, char* const argv[])
       break;
     case 'b':
       p.boundariesEnabled = true;
-      break; 
+      break;
     case 'h':
     default:
-      throw std::runtime_error {"USAGE ERROR!"};
+      throw std::runtime_error{"USAGE ERROR!"};
       return;
     case EOF:
       isFetchingOpt = false;
@@ -68,30 +68,36 @@ int main(int argc, char* const argv[])
 {
   try {
     handleCLInput(argc, argv);
-  }
-  catch (std::invalid_argument const& inputErr) {
-      std::cout << "SYNTAX ERROR - Unexpected input format: " << inputErr.what() << std::endl;
-      std::cout << "Try using -h flag for help." << std::endl;
-      return 1;
-  } catch (std::runtime_error const& e) { 
-      std::cout << e.what() << std::endl;
-      std::cout << "List of options with argument type if required:" << std::endl;
-      std::cout << "[flag] [arg_type] | description" << std::endl;
-      std::cout << "  -n      int     | number of boids simulated" << std::endl;
-      std::cout << "  -t      int     | sample rate (in time steps) of flight data output" << std::endl;
-      std::cout << "  -m      int     | number of obstacles simulated" << std::endl;
-      std::cout << "  -d     float    | boid perception radius" << std::endl;
-      std::cout << "  -s     float    | boid repulsion radius" << std::endl;
-      std::cout << "  -S     float    | boid repulsion strength" << std::endl;
-      std::cout << "  -A     float    | boid allignment strength" << std::endl;
-      std::cout << "  -C     float    | boid cohesion strength" << std::endl;
-      std::cout << "  -o     float    | obstacle influence radius" << std::endl;
-      std::cout << "  -O     float    | obstacle repulsion strength" << std::endl;
-      std::cout << "  -b              | activates simulation area boundaries (if off, the space is torus-like)" << std::endl;
-      return 1;
+  } catch (std::invalid_argument const& inputErr) {
+    std::cout << "SYNTAX ERROR - Unexpected input format: " << inputErr.what()
+              << std::endl;
+    std::cout << "Try using -h flag for help." << std::endl;
+    return 1;
+  } catch (std::runtime_error const& e) {
+    std::cout << e.what() << std::endl;
+    std::cout << "List of options with argument type if required:" << std::endl;
+    std::cout << "[flag] [arg_type] | description" << std::endl;
+    std::cout << "  -n      int     | number of boids simulated" << std::endl;
+    std::cout << "  -t      int     | sample rate (in time steps) of flight "
+                 "data output"
+              << std::endl;
+    std::cout << "  -m      int     | number of obstacles simulated"
+              << std::endl;
+    std::cout << "  -d     float    | boid perception radius" << std::endl;
+    std::cout << "  -s     float    | boid repulsion radius" << std::endl;
+    std::cout << "  -S     float    | boid repulsion strength" << std::endl;
+    std::cout << "  -A     float    | boid allignment strength" << std::endl;
+    std::cout << "  -C     float    | boid cohesion strength" << std::endl;
+    std::cout << "  -o     float    | obstacle influence radius" << std::endl;
+    std::cout << "  -O     float    | obstacle repulsion strength" << std::endl;
+    std::cout << "  -b              | activates simulation area boundaries (if "
+                 "off, the space is torus-like)"
+              << std::endl;
+    return 1;
   }
 
-  sf::RenderWindow window(sf::VideoMode(1600, 900), "Boid Simulator", sf::Style::Close);
+  sf::RenderWindow window(sf::VideoMode(1600, 900), "Boid Simulator",
+                          sf::Style::Close);
   window.setVerticalSyncEnabled(true);
   std::ofstream outputFile{"output.txt"};
   outputFile
@@ -100,7 +106,7 @@ int main(int argc, char* const argv[])
   outputFile
       << "|        | average | std dev |     average     |     std dev     |"
       << std::endl;
-  outputFile 
+  outputFile
       << "|        |         |         |    x   |   y    |    x   |   y    |"
       << std::endl;
 
