@@ -29,12 +29,12 @@ target_link_libraries(final PRIVATE sfml-window sfml-graphics)
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
-#if (BUILD_TESTING)
+if (BUILD_TESTING)
 
   # aggiungi l'eseguibile all.t
-  # add_executable(all.t all.t.cpp complex.t.cpp)
+  # add_executable(test.t test.t complex.t.cpp)
   # aggiungi l'eseguibile all.t alla lista dei test
-  # add_test(NAME all.t COMMAND all.t)
-  # add_executable(test main.cpp boid.cpp simulation.cpp)
+   add_test(NAME test.cpp COMMAND test.cpp)
+   add_executable(test main.cpp boid.cpp simulation.cpp)
 
-#endif()
+endif()
