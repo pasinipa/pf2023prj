@@ -40,21 +40,18 @@ void handleCLInput(int argc, char* const argv[])
     case 'b':
       p.boundariesEnabled = true;
       break; 
+    case 'o':
+      p.obstacleNumber = std::atoi(optarg);
+      break;
+    case 'r':
+      p.sampleRate = std::atoi(optarg);
+      break;
     case 'h':
     default:
       throw std::runtime_error {"Usage: [[insert usage here]]"};
       return;
     case EOF:
       isFetchingOpt = false;
-      break;
-    case 'e':
-      Simulation::parameters.edges = true;
-      break; 
-    case 'o':
-      p.obstacleNumber = std::atoi(optarg);
-      break;
-    case 'r':
-      p.sampleRate = std::atoi(optarg);
       break;
     }
   }
