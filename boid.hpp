@@ -22,6 +22,7 @@ class Boid
 {
  public:
   Boid();
+  Boid(ArrayF2 const& pos, ArrayF2 const& vel);
   void updatePosition();
   void updateVelocity();
   void updateImpulse(std::vector<Boid> const& flock,

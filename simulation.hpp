@@ -18,6 +18,7 @@ class Simulation
 {
  public:
   Simulation();
+  Simulation(std::vector<Boid> const& f);
   long long time{0};
   void updateState();
   void updateView(sf::RenderWindow&) const;

@@ -64,7 +64,7 @@ FlightStatistics Simulation::gatherData() const
   float meanSquaredDist{0.f};
   ArrayF2 meanVel{0.f, 0.f};
   ArrayF2 meanSquaredVel{0.f, 0.f};
-  float flockSize { static_cast<float>(parameters.boidNumber)};
+  float flockSize { static_cast<float>(flock.size())};
 
   for (auto it = flock.begin(); it != flock.end(); ++it) {
     ArrayF2 vel{it->getVelocity()};
