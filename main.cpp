@@ -1,19 +1,19 @@
 #include "simpars.hpp"
 #include "simulation.hpp"
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <unistd.h>
+#include <fstream>
 #include <iostream>
 #include <string>
 
 SimPars Simulation::parameters;
-auto const& parameters { Simulation::parameters };
+auto const& parameters{Simulation::parameters};
 
-bool handleCLInput(int argc, char* const argv[])
+void handleCLInput(int argc, char* const argv[])
 {
   bool isFetchingOpt{true};
-  auto& p {Simulation::parameters};
+  auto& p{Simulation::parameters};
 
   while (isFetchingOpt) {
     int c{getopt(argc, argv, "hvn:D:d:s:a:c:")};
@@ -43,57 +43,51 @@ bool handleCLInput(int argc, char* const argv[])
     case 'h':
     default:
       std::cout << "usage: you used it wrong, dumbass";
-      return false;
+      return;
     case EOF:
       isFetchingOpt = false;
       break;
     }
   }
-  return true;
 }
 
 int main(int argc, char* const argv[])
 {
-  if (!handleCLInput(argc, argv))
-    return 1;
+  // use a try/catch on this guy
+  try {
+    handleCLInput(argc, argv);
+  }
+  catch (std::runtime_error const& e) {}
+
+  sf::RenderWindow window(sf::VideoMode(1600, 900), "Boid Simulator", sf::Style::Close);
+  window.setVerticalSyncEnabled(true);
+  std::ofstream outputFile{"output.txt"};
+  outputFile
+      << "|  time  |     distance      |             velocity              |"
+      << std::endl;
+  outputFile
+      << "|        | average | std dev |     average     |     std dev     |"
+      << std::endl;
+  outputFile 
+      << "|        |         |         |    x   |   y    |    x   |   y    |"
+      << std::endl;
+
   Simulation sim;
 
-  sf::RenderWindow window;
-  window.create(sf::VideoMode(1600, 900), "Boid Simulator", sf::Style::Close);
-  window.setVerticalSyncEnabled(true);
-
-  sf::Font robotoRegular;
-  robotoRegular.loadFromFile("Roboto-Regular.ttf");
-  sf::Text text;
-  text.setFont(robotoRegular);
-  text.setCharacterSize(24);
-  text.setFillColor(sf::Color::White);
-  text.setString("Porcozio diopera");
-  text.setPosition(300, 300);
-
   while (window.isOpen()) {
-    sim.updateState();
-
     sf::Event event;
     while (window.pollEvent(event)) {
-      switch (event.type) {
-      case sf::Event::Closed:
+      if (event.type == sf::Event::Closed) {
         window.close();
-        break;
-      case sf::Event::MouseButtonPressed:
-        // other way of doing this?
-        break;
-      default:
         break;
       }
     }
-
+    sim.updateState();
+    sim.streamStatsToFile(outputFile);
     window.clear();
-    // window.draw(text);
     sim.updateView(window);
     window.display();
-
-    if (parameters.isVerbose)
-      std::cin.get();
   }
+
+  outputFile.close();
 }

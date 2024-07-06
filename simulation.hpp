@@ -1,21 +1,31 @@
 #pragma once
 #include "boid.hpp"
 #include "simpars.hpp"
-#include "statistics.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <fstream>
 #include <vector>
+
+struct FlightStatistics
+{
+  float meanDist{0.f};
+  float stdDevDist{0.f};
+  ArrayF2 meanVel{0.f, 0.f};
+  ArrayF2 stdDevVel{0.f, 0.f};
+};
 
 class Simulation
 {
  public:
   Simulation();
+  long long time{0};
   void updateState();
-  void updateView(sf::RenderWindow&);
+  void updateView(sf::RenderWindow&) const;
+  void streamStatsToFile(std::ofstream&) const;
   static SimPars parameters;
 
  private:
   std::vector<Boid> flock;
   std::vector<Obstacle> obstacles;
-  long long time{0};
+  FlightStatistics flightData() const;
 };

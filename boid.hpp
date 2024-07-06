@@ -14,6 +14,7 @@ using ArrayF2 = std::array<float, 2>;
 
 struct Obstacle
 {
+  Obstacle();
   ArrayF2 position;
 };
 
@@ -26,6 +27,7 @@ class Boid
   void updateImpulse(std::vector<Boid> const& flock,
                      std::vector<Obstacle> const& obstacles);
   ArrayF2 const& getPosition() const;
+  ArrayF2 const& getVelocity() const;
 
  private:
   using Neighbour    = std::pair<Boid const&, float>;
