@@ -129,10 +129,10 @@ void Boid::edgeBounce()
 
 void Boid::updatePosition()
 {
-  m_position += m_velocity;
   if (parameters.edges) 
       edgeBounce();
   else enforceToroidalSpace();
+  m_position += m_velocity;
 }
 
 void Boid::updateVelocity()

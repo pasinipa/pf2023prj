@@ -53,6 +53,9 @@ void handleCLInput(int argc, char* const argv[])
     case 'o':
       p.obstacleNumber = std::atoi(optarg);
       break;
+    case 'r':
+      p.sampleRate = std::atoi(optarg);
+      break;
     }
   }
 }
