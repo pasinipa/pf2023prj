@@ -5,6 +5,7 @@ struct SimPars
 {
   int boidNumber{200};
   int sampleRate{50};
+  int obstacleNumber{40};
   float perceptionRadius{40.f};
   float separationRadius{15.f};
   float separationStrength{15.f};

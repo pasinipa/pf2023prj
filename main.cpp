@@ -47,6 +47,15 @@ void handleCLInput(int argc, char* const argv[])
     case EOF:
       isFetchingOpt = false;
       break;
+    case 'e':
+      Simulation::parameters.edges = true;
+      break; 
+    case 'o':
+      p.obstacleNumber = std::atoi(optarg);
+      break;
+    case 'r':
+      p.sampleRate = std::atoi(optarg);
+      break;
     }
   }
   p.checkValidity();
