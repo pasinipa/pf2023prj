@@ -17,7 +17,7 @@ void handleCLInput(int argc, char* const argv[])
   auto& p{Simulation::parameters};
 
   while (isFetchingOpt) {
-    int c{getopt(argc, argv, "hbn:D:d:s:a:c:")};
+    int c{getopt(argc, argv, "hbn:D:d:s:a:c:o:r:")};
     switch (c) {
     case 'n':
       p.boidNumber = std::atoi(optarg);

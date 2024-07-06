@@ -66,26 +66,29 @@ FlightStatistics Simulation::gatherData() const
   ArrayF2 meanSquaredVel{0.f, 0.f};
 
   for (auto it = flock.begin(); it != flock.end(); ++it) {
+    ArrayF2 vel{it->getVelocity()};
+    meanVel += vel;
+    meanSquaredVel += {std::pow(vel[0], 2.f), std::pow(vel[1], 2.f)};
+
+    if (parameters.boidNumber < 2)
+        continue;
     for (auto jt = it + 1; jt != flock.end(); ++jt) {
       float dist = euclidianNorm(it->getPosition() - jt->getPosition());
       meanDist += dist;
-      meanSquaredDist += std::powf(dist, 2);
+      meanSquaredDist += std::pow(dist, 2.f);
     }
-    ArrayF2 vel{it->getVelocity()};
-    meanVel += vel;
-    meanSquaredVel += {std::powf(vel[0], 2), std::powf(vel[1], 2)};
   }
   // combinations without repetitions of flock.size() elements
-  float N{static_cast<float>(flock.size() * (flock.size() - 1))};
-  meanDist /= N;
-  meanSquaredDist /= N;
+  float nDist{static_cast<float>(parameters.boidNumber * ( parameters.boidNumber - 1))};
+  meanDist /= nDist;
+  meanSquaredDist /= nDist;
   meanVel /= parameters.boidNumber;
   meanSquaredVel /= parameters.boidNumber;
-  float varianceDist{meanSquaredDist - std::powf(meanDist, 2)};
+  float varianceDist{meanSquaredDist - std::pow(meanDist, 2.f)};
   float stdDevDist{std::sqrt(varianceDist)};
   ArrayF2 varianceVel{
       meanSquaredVel
-      - ArrayF2{std::powf(meanVel[0], 2), std::powf(meanVel[1], 2)}};
+      - ArrayF2{std::pow(meanVel[0], 2.f), std::pow(meanVel[1], 2.f)}};
   ArrayF2 stdDevVel{std::sqrt(varianceVel[0]), std::sqrt(varianceVel[1])};
   return {meanDist, stdDevDist, meanVel, stdDevVel};
 }
