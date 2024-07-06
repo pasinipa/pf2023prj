@@ -44,3 +44,4 @@ inline void operator*=(ArrayF2& a1, float f)
   a1[0] *= f;
   a1[1] *= f;
 }
+#endif
