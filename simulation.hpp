@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SIMULATIOM_HPP
+#define SIMULATION_HPP
 #include "boid.hpp"
 #include "simpars.hpp"
 #include <SFML/Graphics.hpp>
@@ -31,3 +32,4 @@ class Simulation
 
   FlightStatistics gatherData() const;
 };
+#endif

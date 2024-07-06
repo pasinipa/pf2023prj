@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BOID_HPP
+#define BOID_HPP
 #include "simpars.hpp"
 #include <array>
 #include <iostream>
@@ -47,3 +48,4 @@ class Boid
   void updateSurroundings(std::vector<Boid> const& state,
                           std::vector<Obstacle> const& obstacles);
 };
+#endif

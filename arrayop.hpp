@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ARRAYOP_HPP
+#define ARRAYOP_HPP
 using ArrayF2 = std::array<float, 2>;
 
 inline ArrayF2 operator+(ArrayF2 const& a1, ArrayF2 const& a2)

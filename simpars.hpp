@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SIMPARS_HPP
+#define SIMPARS_HPP
 #include <stdexcept>
 
 struct SimPars
@@ -30,3 +31,5 @@ struct SimPars
 
   SimPars() = default;
 };
+
+#endif
