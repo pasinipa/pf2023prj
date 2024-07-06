@@ -4,6 +4,11 @@
 #include <iomanip>
 #include <vector>
 
+Simulation::Simulation(std::vector<Boid> const& f)
+    : flock{f}
+    , obstacles{std::vector<Obstacle>()}
+{}
+
 Simulation::Simulation()
     : flock{std::vector<Boid>(
         static_cast<unsigned long>(parameters.boidNumber))}
@@ -80,7 +85,7 @@ FlightStatistics Simulation::gatherData() const
     }
   }
   // combinations without repetitions of flock.size() elements
-  float nDist{flockSize * (flockSize - 1)};
+  float nDist{( flockSize * (flockSize - 1)) / 2.f};
   meanDist /= nDist;
   meanSquaredDist /= nDist;
   meanVel /= flockSize;

@@ -3,7 +3,7 @@ project(boid_simulator VERSION 1.0)
 
 
 # abilita il supporto per i test, tra cui l'opzione BUILD_TESTING usata sotto
-#include(CTest)
+include(CTest)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -32,9 +32,9 @@ target_link_libraries(final PRIVATE sfml-window sfml-graphics)
 if (BUILD_TESTING)
 
   # aggiungi l'eseguibile all.t
-   add_executable(test.t test.t.cpp complex.t.cpp)
+   add_executable(test.t test.cpp boid.cpp simulation.cpp)
   # aggiungi l'eseguibile all.t alla lista dei test
    add_test(NAME test.t COMMAND test.t)
-   #add_executable(test main.cpp boid.cpp simulation.cpp)
+   target_link_libraries(test.t PRIVATE sfml-window sfml-graphics)
 
 endif()

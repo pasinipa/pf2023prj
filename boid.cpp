@@ -48,6 +48,14 @@ Obstacle::Obstacle()
     : position{xPosDistribution(eng), yPosDistribution(eng)}
 {}
 
+Boid::Boid(ArrayF2 const& pos, ArrayF2 const& vel)
+    : m_neighbourhood{}
+    , m_nearObstacles{}
+    , m_position{pos}
+    , m_velocity{vel}
+    , m_impulse{0.f, 0.f}
+{}
+
 Boid::Boid()
     : m_position{xPosDistribution(eng), yPosDistribution(eng)}
     , m_velocity{velDistribution(eng), velDistribution(eng)}

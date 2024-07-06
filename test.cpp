@@ -7,6 +7,7 @@
 #include "boid.hpp"
 #include "arrayop.hpp"
 #include "simulation.hpp"
+
 SimPars Simulation::parameters;
 auto const& parameters{Simulation::parameters};
 
@@ -33,20 +34,6 @@ TEST_CASE("Testing array operations")
   CHECK(a1 == ArrayF2{-2., 6.});
   CHECK(a2 == ArrayF2{-1, .0});
 }
-
-
-Boid::Boid(ArrayF2 const& pos, ArrayF2 const& vel)
-    : m_position{pos}
-    , m_velocity{vel}
-    , m_impulse{0.f, 0.f}
-    , m_neighbourhood{}
-    , m_nearObstacles{}
-{}
-
-Simulation::Simulation(std::vector<Boid> const& f)
-    : flock{f}
-    , obstacles{std::vector<Obstacle>()}
-{}
 
 std::vector<Boid> testFlock{Boid{{1., 2.}, {0., 1.}}, Boid{{4., 2.}, {0., 1.}},
                             Boid{{1., 6.}, {0., 1.}}};
