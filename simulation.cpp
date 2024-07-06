@@ -7,7 +7,7 @@
 Simulation::Simulation()
     : flock{std::vector<Boid>(
         static_cast<unsigned long>(parameters.boidNumber))}
-    , obstacles{std::vector<Obstacle>(40)}
+    , obstacles{std::vector<Obstacle>(parameters.obstacleNumber)}
 {}
 
 void Simulation::updateState()
@@ -80,8 +80,8 @@ FlightStatistics Simulation::flightData() const
   float N{static_cast<float>(flock.size() * (flock.size() - 1))};
   meanDist /= N;
   meanSquaredDist /= N;
-  meanVel /= N;
-  meanSquaredVel /= N;
+  meanVel /= parameters.boidNumber;
+  meanSquaredVel /= paraeters.boidNumber;
   float varianceDist{meanSquaredDist - std::powf(meanDist, 2)};
   float stdDevDist{std::sqrt(varianceDist)};
   ArrayF2 varianceVel{

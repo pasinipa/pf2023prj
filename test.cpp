@@ -2,6 +2,7 @@
 
 #include "arrayop.hpp"
 #include "boid.hpp"
+#include "simulation.hpp"
 
 #include "doctest.h"
 
@@ -52,6 +53,6 @@ TEST_CASE("testing boid class members") {
 
 }
 
-TEST_CASE("testing statistics class members") {
-
+TEST_CASE("testing statistics") {
+  Simulation SimTest;
 }
