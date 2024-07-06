@@ -135,7 +135,6 @@ void Boid::updatePosition()
   if (parameters.boundariesEnabled) 
       enforceBoundaries();
   else enforceToroidalSpace();
-  m_position += m_velocity;
 }
 
 void Boid::updateVelocity()

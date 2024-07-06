@@ -64,13 +64,14 @@ FlightStatistics Simulation::gatherData() const
   float meanSquaredDist{0.f};
   ArrayF2 meanVel{0.f, 0.f};
   ArrayF2 meanSquaredVel{0.f, 0.f};
+  float flockSize { static_cast<float>(parameters.boidNumber)};
 
   for (auto it = flock.begin(); it != flock.end(); ++it) {
     ArrayF2 vel{it->getVelocity()};
     meanVel += vel;
     meanSquaredVel += {std::pow(vel[0], 2.f), std::pow(vel[1], 2.f)};
 
-    if (parameters.boidNumber < 2)
+    if (flockSize < 2)
         continue;
     for (auto jt = it + 1; jt != flock.end(); ++jt) {
       float dist = euclidianNorm(it->getPosition() - jt->getPosition());
@@ -79,11 +80,11 @@ FlightStatistics Simulation::gatherData() const
     }
   }
   // combinations without repetitions of flock.size() elements
-  float nDist{static_cast<float>(parameters.boidNumber * ( parameters.boidNumber - 1))};
+  float nDist{flockSize * (flockSize - 1)};
   meanDist /= nDist;
   meanSquaredDist /= nDist;
-  meanVel /= parameters.boidNumber;
-  meanSquaredVel /= parameters.boidNumber;
+  meanVel /= flockSize;
+  meanSquaredVel /= flockSize;
   float varianceDist{meanSquaredDist - std::pow(meanDist, 2.f)};
   float stdDevDist{std::sqrt(varianceDist)};
   ArrayF2 varianceVel{

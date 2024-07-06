@@ -17,10 +17,16 @@ void handleCLInput(int argc, char* const argv[])
   auto& p{Simulation::parameters};
 
   while (isFetchingOpt) {
-    int c{getopt(argc, argv, "hbn:D:d:s:a:c:o:r:")};
+    int c{getopt(argc, argv, "n:r:o:D:d:s:a:c:bh")};
     switch (c) {
     case 'n':
       p.boidNumber = std::atoi(optarg);
+      break;
+    case 'r':
+      p.sampleRate = std::atoi(optarg);
+      break;
+    case 'o':
+      p.obstacleNumber = std::atoi(optarg);
       break;
     case 'D':
       p.perceptionRadius = std::stof(std::string(optarg));
@@ -37,15 +43,15 @@ void handleCLInput(int argc, char* const argv[])
     case 'c':
       p.cohesionStrength = std::stof(std::string(optarg));
       break;
+    case 'R':
+      p.obstacleRadius = std::stof(std::string(optarg));
+      break;
+    case 'F':
+      p.obstacleStrength = std::stof(std::string(optarg));
+      break;
     case 'b':
       p.boundariesEnabled = true;
       break; 
-    case 'o':
-      p.obstacleNumber = std::atoi(optarg);
-      break;
-    case 'r':
-      p.sampleRate = std::atoi(optarg);
-      break;
     case 'h':
     default:
       throw std::runtime_error {"Usage: [[insert usage here]]"};

@@ -7,7 +7,7 @@
 
 const float X_SPACE{1600.f};
 const float Y_SPACE{900.f};
-const float MAX_SPEED{1.f};
+const float MAX_SPEED{1.5f};
 const float MAX_IMPULSE{0.06f};
 
 using ArrayF2 = std::array<float, 2>;
