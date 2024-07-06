@@ -27,5 +27,6 @@ class Simulation
  private:
   std::vector<Boid> flock;
   std::vector<Obstacle> obstacles;
-  FlightStatistics flightData() const;
+
+  FlightStatistics gatherData() const;
 };

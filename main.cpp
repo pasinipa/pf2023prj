@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 SimPars Simulation::parameters;
 auto const& parameters{Simulation::parameters};
@@ -16,12 +17,8 @@ void handleCLInput(int argc, char* const argv[])
   auto& p{Simulation::parameters};
 
   while (isFetchingOpt) {
-    int c{getopt(argc, argv, "hvn:D:d:s:a:c:")};
-
+    int c{getopt(argc, argv, "hbn:D:d:s:a:c:")};
     switch (c) {
-    case 'v':
-      p.isVerbose = true;
-      break;
     case 'n':
       p.boidNumber = std::atoi(optarg);
       break;
@@ -29,38 +26,45 @@ void handleCLInput(int argc, char* const argv[])
       p.perceptionRadius = std::stof(std::string(optarg));
       break;
     case 'd':
-      p.separationRuleRadius = std::stof(std::string(optarg));
+      p.separationRadius = std::stof(std::string(optarg));
       break;
     case 's':
-      p.separationRuleStrength = std::stof(std::string(optarg));
+      p.separationStrength = std::stof(std::string(optarg));
       break;
     case 'a':
-      p.allignmentRuleStrength = std::stof(std::string(optarg));
+      p.allignmentStrength = std::stof(std::string(optarg));
       break;
     case 'c':
-      p.cohesionRuleStrength = std::stof(std::string(optarg));
+      p.cohesionStrength = std::stof(std::string(optarg));
       break;
+    case 'b':
+      p.boundariesEnabled = true;
+      break; 
     case 'h':
     default:
-      std::cout << "usage: you used it wrong, dumbass";
+      throw std::runtime_error {"Usage: [[insert usage here]]"};
       return;
     case EOF:
       isFetchingOpt = false;
       break;
-      case 'e':
-      Simulation::parameters.edges = true;
-      break; 
     }
   }
+  p.checkValidity();
 }
 
 int main(int argc, char* const argv[])
 {
-  // use a try/catch on this guy
   try {
     handleCLInput(argc, argv);
   }
-  catch (std::runtime_error const& e) {}
+  catch (std::invalid_argument const& inputErr) {
+      std::cout << "SYNTAX ERROR - Unexpected input format: " << inputErr.what() << std::endl;
+      std::cout << "Try using -h flag for help." << std::endl;
+      return 1;
+  } catch (std::runtime_error const& e) {
+      std::cout << e.what() << std::endl;
+      return 1;
+  }
 
   sf::RenderWindow window(sf::VideoMode(1600, 900), "Boid Simulator", sf::Style::Close);
   window.setVerticalSyncEnabled(true);

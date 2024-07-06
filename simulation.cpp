@@ -43,7 +43,7 @@ void Simulation::updateView(sf::RenderWindow& window) const
 void Simulation::streamStatsToFile(std::ofstream& outputFile) const
 {
   if (time % parameters.sampleRate == 0 and outputFile.is_open()) {
-    FlightStatistics stats{flightData()};
+    FlightStatistics stats{gatherData()};
     outputFile << std::fixed << std::setprecision(3) << std::setfill(' ');
     outputFile << "| " << std::setw(6) << time;
     outputFile << " | " << std::setw(6) << stats.meanDist;
@@ -53,13 +53,12 @@ void Simulation::streamStatsToFile(std::ofstream& outputFile) const
     outputFile << " | " << std::setw(6) << stats.stdDevVel[0];
     outputFile << " | " << std::setw(6) << stats.stdDevVel[1];
     outputFile << " |" << std::endl;
-    
   }
 }
 
 float euclidianNorm(ArrayF2 const&);
 
-FlightStatistics Simulation::flightData() const
+FlightStatistics Simulation::gatherData() const
 {
   float meanDist{0.f};
   float meanSquaredDist{0.f};

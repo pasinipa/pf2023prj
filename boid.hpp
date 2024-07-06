@@ -42,8 +42,7 @@ class Boid
   ArrayF2 impulseFromNeighbours();
   ArrayF2 impulseFromObstacles();
   void enforceToroidalSpace();
-  // da modificare
-  void edgeBounce();
+  void enforceBoundaries();
   void updateSurroundings(std::vector<Boid> const& state,
                           std::vector<Obstacle> const& obstacles);
 };

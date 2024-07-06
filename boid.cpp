@@ -18,9 +18,11 @@ float euclidianNorm(ArrayF2 const& arr)
 
 void setMagnitude(ArrayF2& arr, float magnitude)
 {
-  assert(euclidianNorm(arr) != 0.f);
-  arr /= euclidianNorm(arr);
-  arr *= magnitude;
+  float norm { euclidianNorm(arr) };
+  if (norm != 0.f) {
+    arr /= norm;
+    arr *= magnitude;
+  }
 }
 
 void Boid::enforceToroidalSpace()
@@ -68,7 +70,7 @@ ArrayF2 Boid::impulseFromNeighbours()
     auto [otherBoid, distToOther] = n;
     cohesionImp += (otherBoid.m_position - m_position);
     allignmentImp += (otherBoid.m_velocity - m_velocity);
-    if (distToOther != 0.f and distToOther < parameters.separationRuleRadius) {
+    if (distToOther != 0.f and distToOther < parameters.separationRadius) {
       ArrayF2 repulsionFromOther{m_position - otherBoid.m_position};
       setMagnitude(repulsionFromOther, 1 / distToOther);
       separationImp += repulsionFromOther;
@@ -78,12 +80,12 @@ ArrayF2 Boid::impulseFromNeighbours()
   float neighbourhoodSize{static_cast<float>(m_neighbourhood.size())};
   allignmentImp /= neighbourhoodSize;
   cohesionImp /= neighbourhoodSize;
-  if (euclidianNorm(cohesionImp) < (parameters.separationRuleRadius + 5))
+  if (euclidianNorm(cohesionImp) < (parameters.separationRadius + 5))
     cohesionImp = {0.f, 0.f};
 
-  allignmentImp *= parameters.allignmentRuleStrength;
-  cohesionImp *= parameters.cohesionRuleStrength;
-  separationImp *= parameters.separationRuleStrength;
+  allignmentImp *= parameters.allignmentStrength;
+  cohesionImp *= parameters.cohesionStrength;
+  separationImp *= parameters.separationStrength;
   neighbourImp = allignmentImp + cohesionImp + separationImp;
   if (euclidianNorm(neighbourImp) > MAX_IMPULSE)
     setMagnitude(neighbourImp, MAX_IMPULSE);
@@ -100,12 +102,12 @@ ArrayF2 Boid::impulseFromObstacles()
   for (auto const& o : m_nearObstacles) {
     auto [obstacle, distToObstacle] = o;
     if (distToObstacle != 0.f
-        and distToObstacle < parameters.obstacleRuleRadius) {
+        and distToObstacle < parameters.obstacleRadius) {
       ArrayF2 repulsionFromObstacle{m_position - obstacle.position};
       setMagnitude(repulsionFromObstacle, 1 / distToObstacle);
       obstacleImp += repulsionFromObstacle;
     }
-    obstacleImp *= parameters.obstacleRuleStrength;
+    obstacleImp *= parameters.obstacleStrength;
   }
   return obstacleImp;
 }
@@ -117,7 +119,7 @@ void Boid::updateImpulse(std::vector<Boid> const& flock,
   m_impulse = impulseFromNeighbours() + impulseFromObstacles();
 }
 
-void Boid::edgeBounce()
+void Boid::enforceBoundaries()
 {
   if (((m_position + m_velocity)[0] >= X_SPACE)
       || ((m_position + m_velocity)[0] <= 0))
@@ -130,8 +132,8 @@ void Boid::edgeBounce()
 void Boid::updatePosition()
 {
   m_position += m_velocity;
-  if (parameters.edges) 
-      edgeBounce();
+  if (parameters.boundariesEnabled) 
+      enforceBoundaries();
   else enforceToroidalSpace();
 }
 
