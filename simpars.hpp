@@ -1,5 +1,6 @@
 #ifndef SIMPARS_HPP
 #define SIMPARS_HPP
+
 #include <stdexcept>
 
 struct SimPars
@@ -28,8 +29,6 @@ struct SimPars
             or obstacleStrength < 0.f)
         throw std::invalid_argument {"check for any negative values."};
   }
-
-  SimPars() = default;
 };
 
 #endif

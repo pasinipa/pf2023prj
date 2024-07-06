@@ -1,5 +1,6 @@
 #ifndef BOID_HPP
 #define BOID_HPP
+
 #include "simpars.hpp"
 #include <array>
 #include <iostream>

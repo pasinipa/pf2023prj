@@ -17,36 +17,36 @@ void handleCLInput(int argc, char* const argv[])
   auto& p{Simulation::parameters};
 
   while (isFetchingOpt) {
-    int c{getopt(argc, argv, "n:r:o:D:d:s:a:c:bh")};
+    int c{getopt(argc, argv, "n:t:m:d:s:S:A:C:o:O:bh")};
     switch (c) {
     case 'n':
       p.boidNumber = std::atoi(optarg);
       break;
-    case 'r':
+    case 't':
       p.sampleRate = std::atoi(optarg);
       break;
-    case 'o':
+    case 'm':
       p.obstacleNumber = std::atoi(optarg);
       break;
-    case 'D':
+    case 'd':
       p.perceptionRadius = std::stof(std::string(optarg));
       break;
-    case 'd':
+    case 's':
       p.separationRadius = std::stof(std::string(optarg));
       break;
-    case 's':
+    case 'S':
       p.separationStrength = std::stof(std::string(optarg));
       break;
-    case 'a':
+    case 'A':
       p.allignmentStrength = std::stof(std::string(optarg));
       break;
-    case 'c':
+    case 'C':
       p.cohesionStrength = std::stof(std::string(optarg));
       break;
-    case 'R':
+    case 'o':
       p.obstacleRadius = std::stof(std::string(optarg));
       break;
-    case 'F':
+    case 'O':
       p.obstacleStrength = std::stof(std::string(optarg));
       break;
     case 'b':
@@ -54,7 +54,7 @@ void handleCLInput(int argc, char* const argv[])
       break; 
     case 'h':
     default:
-      throw std::runtime_error {"Usage: [[insert usage here]]"};
+      throw std::runtime_error {"USAGE ERROR!"};
       return;
     case EOF:
       isFetchingOpt = false;
@@ -73,8 +73,21 @@ int main(int argc, char* const argv[])
       std::cout << "SYNTAX ERROR - Unexpected input format: " << inputErr.what() << std::endl;
       std::cout << "Try using -h flag for help." << std::endl;
       return 1;
-  } catch (std::runtime_error const& e) {
+  } catch (std::runtime_error const& e) { 
       std::cout << e.what() << std::endl;
+      std::cout << "List of options with argument type if required:" << std::endl;
+      std::cout << "[flag] [arg_type] | description" << std::endl;
+      std::cout << "  -n      int     | number of boids simulated" << std::endl;
+      std::cout << "  -t      int     | sample rate (in time steps) of flight data output" << std::endl;
+      std::cout << "  -m      int     | number of obstacles simulated" << std::endl;
+      std::cout << "  -d     float    | boid perception radius" << std::endl;
+      std::cout << "  -s     float    | boid repulsion radius" << std::endl;
+      std::cout << "  -S     float    | boid repulsion strength" << std::endl;
+      std::cout << "  -A     float    | boid allignment strength" << std::endl;
+      std::cout << "  -C     float    | boid cohesion strength" << std::endl;
+      std::cout << "  -o     float    | obstacle influence radius" << std::endl;
+      std::cout << "  -O     float    | obstacle repulsion strength" << std::endl;
+      std::cout << "  -b              | activates simulation area boundaries (if off, the space is torus-like)" << std::endl;
       return 1;
   }
 

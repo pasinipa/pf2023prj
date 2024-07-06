@@ -1,5 +1,6 @@
-#ifndef SIMULATIOM_HPP
+#ifndef SIMULATION_HPP
 #define SIMULATION_HPP
+
 #include "boid.hpp"
 #include "simpars.hpp"
 #include <SFML/Graphics.hpp>
